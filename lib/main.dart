@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'maps_page.dart';
 import 'convert_page.dart';
 import 'daily_page.dart';
 import 'communicate_page.dart';
@@ -37,6 +38,7 @@ class _NavigationExampleState extends State<NavigationExample> {
     const DailyPage(),
     const ConvertPage(),
     const CommunicatePage(),
+    const MapsPage(),
   ];
 
   @override
@@ -48,25 +50,48 @@ class _NavigationExampleState extends State<NavigationExample> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: const Color.fromARGB(255, 188, 0, 45),
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
+        destinations: [
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
+            selectedIcon: Icon(
+              Icons.home,
+              color: currentPageIndex == 0 ? Colors.white : Colors.black38,
+            ),
             icon: Icon(Icons.home_outlined),
             label: 'Accueil',
           ),
           NavigationDestination(
-            icon: Icon(Icons.calendar_month_rounded),
+            selectedIcon: Icon(
+              Icons.calendar_month_rounded,
+              color: currentPageIndex == 1 ? Colors.white : Colors.black38,
+            ),
+            icon: Icon(Icons.calendar_month_outlined),
             label: 'Journal Bord',
           ),
           NavigationDestination(
-            icon: Icon(Icons.change_circle_rounded),
+            selectedIcon: Icon(
+              Icons.change_circle_rounded,
+              color: currentPageIndex == 2 ? Colors.white : Colors.black38,
+            ),
+            icon: Icon(Icons.change_circle_outlined),
             label: 'Convertisseur',
           ),
           NavigationDestination(
-            icon: Icon(Icons.emoji_people),
+            selectedIcon: Icon(
+              Icons.emoji_people,
+              color: currentPageIndex == 3 ? Colors.white : Colors.black38,
+            ),
+            icon: Icon(Icons.emoji_people_outlined),
             label: 'Communiquer',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(
+              Icons.emoji_people,
+              color: currentPageIndex == 4 ? Colors.white : Colors.black38,
+            ),
+            icon: Icon(Icons.map_outlined),
+            label: 'Maps',
           ),
         ],
       ),

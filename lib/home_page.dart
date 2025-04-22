@@ -7,10 +7,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   String _japanTime = '';
   String _franceTime = '';
   Timer? _timer;
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     _updateTime();
     _timer = Timer.periodic(Duration(minutes: 1), (Timer t) => _updateTime());
   }
-  
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -66,64 +66,60 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Voyage au Japon 2025 ! 🎌',
+                '🇯🇵 Voyage au Japon 2025 ! 🇯🇵',
                 style: theme.textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              Image.asset(
-                'assets/group.png',
-                fit: BoxFit.cover,
-                height: 500,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Informations utiles',
-                style: theme.textTheme.titleLarge,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'D\'autres textes',
-                style: theme.textTheme.bodyMedium,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  'assets/group.png',
+                  fit: BoxFit.cover,
+                  height: 450,
+                ),
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    '🇯🇵',
-                    style: TextStyle(fontSize: 24),
-                  ),
+                  Text('🇯🇵', style: TextStyle(fontSize: 32)),
                   const SizedBox(width: 10),
                   Text(
                     _japanTime,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
-                  const SizedBox(width: 20),
-                  Text(
-                    '🇫🇷',
-                    style: TextStyle(fontSize: 24),
-                  ),
+                  const SizedBox(width: 32),
+                  Text('🇫🇷', style: TextStyle(fontSize: 24)),
                   const SizedBox(width: 10),
                   Text(
                     _franceTime,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               InkWell(
                 onTap: () {
-                  launchUrl(Uri.parse('https://www.example.com'));
+                  launchUrl(
+                    Uri.parse(
+                      'https://docs.google.com/document/d/1z8F9iDIbLCFe-gv78VDf_DHvopjSITw7aNXtdQ-pn7U/edit',
+                    ),
+                  );
                 },
                 child: Text(
                   'Voir le Google doc',
-                  style: theme.textTheme.bodyMedium?.copyWith(color: Colors.blue),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.blue,
+                  ),
                 ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Penses à :\n📷 prendre des photos' +
+                    '\n🥤 boire de l\'eau' +
+                    '\n🧸🎁 acheter des souvenirs ',
+                style: theme.textTheme.titleLarge,
               ),
             ],
           ),

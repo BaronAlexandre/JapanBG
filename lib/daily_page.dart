@@ -37,7 +37,7 @@ class DailyPage extends StatelessWidget {
     return Scaffold(
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, // 7 jours par ligne
+          crossAxisCount: 3, // 7 jours par ligne
           childAspectRatio: 1.2, // Aspect ratio pour avoir un carré ou presque
         ),
         itemCount: days.length,
@@ -53,7 +53,10 @@ class DailyPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => DayEditorPage(day: index + 1), // Passer l'index + 1 pour le jour sélectionné
+                    builder:
+                        (_) => DayEditorPage(
+                          day: index + 1,
+                        ), // Passer l'index + 1 pour le jour sélectionné
                   ),
                 );
               },
@@ -62,42 +65,47 @@ class DailyPage extends StatelessWidget {
                 children: [
                   // Image de fond avec flou et transparence
                   ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2), // Flou léger
+                    imageFilter: ImageFilter.blur(
+                      sigmaX: 1,
+                      sigmaY: 1,
+                    ), // Flou léger
                     child: Opacity(
                       opacity: 0.7, // Transparence de l'image
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
+                      child: Image.asset(imagePath, fit: BoxFit.cover),
+                    ),
+                  ),
+
+                  // Numéro en haut a gauche
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'J${index + 1}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                  
-                  // Numéro en haut a gauche
-                  Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.6),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            'J${index + 1}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                  
+
                   // Contenu textuel sur fond blanc
                   Center(
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.8), // Fond blanc légèrement transparent
+                        color: Colors.white.withValues(
+                          alpha: 0.9,
+                        ), // Fond blanc légèrement transparent
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
@@ -125,7 +133,7 @@ class DailyPage extends StatelessWidget {
                   ),
                 ],
               ),
-),
+            ),
           );
         },
       ),

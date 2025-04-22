@@ -1,44 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ConvertPage extends StatefulWidget {
   const ConvertPage({super.key});
 
   @override
-  _ConvertPageState createState() => _ConvertPageState();
+  ConvertPageState createState() => ConvertPageState();
 }
 
-class _ConvertPageState extends State<ConvertPage> {
+class ConvertPageState extends State<ConvertPage> {
   final TextEditingController _euroController = TextEditingController();
   final TextEditingController _yenController = TextEditingController();
-  // Taux de change https://www.google.com/finance/quote/EUR-JPY
+
   final double _euroToYenRate = 161.5620;
   final double _yenToEuroRate = 1 / 161.5620;
 
-  void _convertEuroToYen() {
-    final euroAmount = double.tryParse(_euroController.text) ?? 0;
-    final yenAmount = euroAmount * _euroToYenRate;
-    setState(() {
-      _yenController.text = yenAmount.toStringAsFixed(4);
-    });
-  }
+  bool _isUpdating = false;
 
-  void _convertYenToEuro() {
-    final yenAmount = double.tryParse(_yenController.text) ?? 0;
-    final euroAmount = yenAmount * _yenToEuroRate;
-    setState(() {
+  @override
+  void initState() {
+    super.initState();
+
+    _euroController.addListener(() {
+      if (_isUpdating) return;
+      _isUpdating = true;
+      final euroAmount = double.tryParse(_euroController.text) ?? 0;
+      final yenAmount = euroAmount * _euroToYenRate;
+      _yenController.text = yenAmount.toStringAsFixed(4);
+      _isUpdating = false;
+    });
+
+    _yenController.addListener(() {
+      if (_isUpdating) return;
+      _isUpdating = true;
+      final yenAmount = double.tryParse(_yenController.text) ?? 0;
+      final euroAmount = yenAmount * _yenToEuroRate;
       _euroController.text = euroAmount.toStringAsFixed(2);
+      _isUpdating = false;
     });
   }
 
   @override
+  void dispose() {
+    _euroController.dispose();
+    _yenController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Convertisseur'),
-      ),
+      appBar: AppBar(title: Text('Convertisseur')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: _euroController,
@@ -47,18 +64,6 @@ class _ConvertPageState extends State<ConvertPage> {
                 labelText: 'Montant en Euros',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.euro_symbol),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _convertEuroToYen,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.euro_symbol),
-                  Icon(Icons.arrow_forward),
-                  Icon(Icons.currency_yen),
-                ],
               ),
             ),
             SizedBox(height: 16.0),
@@ -72,16 +77,35 @@ class _ConvertPageState extends State<ConvertPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _convertYenToEuro,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
                 children: [
-                  Icon(Icons.currency_yen),
-                  Icon(Icons.arrow_forward),
-                  Icon(Icons.euro_symbol),
+                  TextSpan(text: 'Le taux de change est '),
+                  TextSpan(
+                    text: _euroToYenRate.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
+            ),
+            Row(
+              children: [
+                Text("S'il a varié, il est disponible ici : "),
+                InkWell(
+                  onTap: () {
+                    launchUrl(
+                      Uri.parse('https://www.google.com/finance/quote/EUR-JPY'),
+                    );
+                  },
+                  child: Text(
+                    'Voir le taux de change',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

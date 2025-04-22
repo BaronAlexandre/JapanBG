@@ -4,10 +4,10 @@ class ConvertPage extends StatefulWidget {
   const ConvertPage({super.key});
 
   @override
-  _ConvertPageState createState() => _ConvertPageState();
+  ConvertPageState createState() => ConvertPageState();
 }
 
-class _ConvertPageState extends State<ConvertPage> {
+class ConvertPageState extends State<ConvertPage> {
   final TextEditingController _euroController = TextEditingController();
   final TextEditingController _yenController = TextEditingController();
   // Taux de change https://www.google.com/finance/quote/EUR-JPY

@@ -87,7 +87,7 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
           NavigationDestination(
             selectedIcon: Icon(
-              Icons.emoji_people,
+              Icons.map,
               color: currentPageIndex == 4 ? Colors.white : Colors.black38,
             ),
             icon: Icon(Icons.map_outlined),

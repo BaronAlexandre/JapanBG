@@ -161,6 +161,12 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
 
   'Shopping et Argent': [
     Phrase(
+      francais: 'Y a-t-il un distributeur de billets près d\'ici ?',
+      japonais: '近くにATMはありますか?',
+      romaji: 'Chikaku ni ATM wa arimasu ka?',
+      emoji: '💳',
+    ),
+    Phrase(
       francais: 'Combien ça coûte ?',
       japonais: 'いくらですか?',
       romaji: 'Ikura desu ka?',
@@ -220,21 +226,6 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
       japonais: '桜を見るのに一番いい場所はどこですか？',
       romaji: 'Sakura o miru no ni ichiban ii basho wa doko desu ka?',
       emoji: '🌸',
-    ),
-  ],
-
-  'Santé et Sécurité': [
-    Phrase(
-      francais: 'Y a-t-il un distributeur de billets près d\'ici ?',
-      japonais: '近くにATMはありますか？',
-      romaji: 'Chikaku ni ATM wa arimasu ka?',
-      emoji: '💳',
-    ),
-    Phrase(
-      francais: 'Je suis allergique à ...',
-      japonais: '...アレルギーがあります',
-      romaji: '... arerugii ga arimasu',
-      emoji: '⚠️',
     ),
   ],
 

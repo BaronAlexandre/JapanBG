@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Modèle
 class Phrase {
   final String francais;
   final String japonais;
@@ -258,7 +257,6 @@ class _CommunicatePageState extends State<CommunicatePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Filtrer les phrases selon la recherche
     final filteredPhrases =
         phrasesParCategorie.entries
             .map((entry) {
@@ -284,7 +282,6 @@ class _CommunicatePageState extends State<CommunicatePage> {
       appBar: AppBar(
         title: const Text('Pour blablater'),
         actions: [
-          // Barre de recherche dans l'AppBar
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(

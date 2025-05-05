@@ -12,42 +12,99 @@ class MapsPage extends StatefulWidget {
 }
 
 class MapsPageState extends State<MapsPage> {
-  List<LatLng> stops = [];
-  Map<LatLng, String> stopNames = {}; // Mapping from LatLng to stop names
-  Set<LatLng> selectedStops = {}; // Keeps track of selected stops
+  Map<String, List<LatLng>> lineStops = {};
+  Map<LatLng, String> stopNames = {};
+  Set<LatLng> selectedStops = {};
   bool isLoading = true;
+  Map<String, bool> lineVisibility = {};
+
+  final List<String> metroLines = [
+    'assets/osm/tokyo/c.osm',
+    'assets/osm/tokyo/f.osm',
+    'assets/osm/tokyo/g.osm',
+    'assets/osm/tokyo/h.osm',
+    'assets/osm/tokyo/m.osm',
+    'assets/osm/tokyo/n.osm',
+    'assets/osm/tokyo/t.osm',
+    'assets/osm/tokyo/y.osm',
+    'assets/osm/tokyo/z.osm',
+
+    'assets/osm/kyoto/karasuma.osm',
+    'assets/osm/kyoto/tozai.osm',
+
+    'assets/osm/osaka/midosuji.osm',
+    'assets/osm/osaka/chuo.osm',
+    'assets/osm/osaka/imazatosuji.osm',
+    'assets/osm/osaka/nagahori-tsurumi-ryokuchi.osm',
+    'assets/osm/osaka/nanko-port-own.osm',
+    'assets/osm/osaka/sakaisuji.osm',
+    'assets/osm/osaka/senichimae.osm',
+    'assets/osm/osaka/tanimachi.osm',
+    'assets/osm/osaka/yotsubashi.osm',
+  ];
+
+  final Map<String, Color> lineColors = {
+    'assets/osm/tokyo/c.osm': Colors.green,
+    'assets/osm/tokyo/f.osm': Colors.brown,
+    'assets/osm/tokyo/g.osm': Colors.orange,
+    'assets/osm/tokyo/h.osm': Colors.grey,
+    'assets/osm/tokyo/m.osm': Colors.red,
+    'assets/osm/tokyo/n.osm': Colors.teal,
+    'assets/osm/tokyo/t.osm': Colors.lightBlue,
+    'assets/osm/tokyo/y.osm': Colors.yellow,
+    'assets/osm/tokyo/z.osm': Colors.purple,
+
+    'assets/osm/kyoto/karasuma.osm': Colors.green,
+    'assets/osm/kyoto/tozai.osm': Colors.red,
+
+    'assets/osm/osaka/midosuji.osm': Colors.red,
+    'assets/osm/osaka/chuo.osm': Colors.greenAccent,
+    'assets/osm/osaka/imazatosuji.osm': Colors.orange,
+    'assets/osm/osaka/nagahori-tsurumi-ryokuchi.osm': Colors.lightGreen,
+    'assets/osm/osaka/nanko-port-own.osm': Colors.lightBlue,
+    'assets/osm/osaka/sakaisuji.osm': Colors.brown,
+    'assets/osm/osaka/senichimae.osm': Colors.pink,
+    'assets/osm/osaka/tanimachi.osm': Colors.purple,
+    'assets/osm/osaka/yotsubashi.osm': Colors.blueAccent,
+  };
+
+  final String thunderforestApiKey = '<TOKEN API>';
 
   @override
   void initState() {
     super.initState();
+    lineVisibility = {for (var line in metroLines) line: true};
     loadMapData();
   }
 
   Future<void> loadMapData() async {
     try {
-      final String data = await rootBundle.loadString('assets/osm/tokyo/g.osm');
-      final document = xml.XmlDocument.parse(data);
-      final relation = document.findAllElements('relation').first;
+      for (String file in metroLines) {
+        final String data = await rootBundle.loadString(file);
+        final document = xml.XmlDocument.parse(data);
+        final relation = document.findAllElements('relation').first;
 
-      // Parse stops
-      relation
-          .findElements('member')
-          .where((element) => element.getAttribute('role') == 'stop')
-          .forEach((element) {
-            final lat = double.parse(element.getAttribute('lat')!);
-            final lon = double.parse(element.getAttribute('lon')!);
-            final latLng = LatLng(lat, lon);
+        List<LatLng> stops = [];
+        relation
+            .findElements('member')
+            .where((element) => element.getAttribute('role') == 'stop')
+            .forEach((element) {
+              final lat = double.parse(element.getAttribute('lat')!);
+              final lon = double.parse(element.getAttribute('lon')!);
+              final latLng = LatLng(lat, lon);
 
-            // Get the name and name_en attributes
-            final name = element.getAttribute('name') ?? 'Unknown';
-            final nameEn = element.getAttribute('name_en') ?? 'Unknown';
+              final name = element.getAttribute('name') ?? 'Unknown';
+              final nameEn = element.getAttribute('name_en') ?? 'Unknown';
 
-            stopNames[latLng] = '$name / $nameEn'; // Combine both names
+              stopNames[latLng] = '$name / $nameEn';
+              stops.add(latLng);
+            });
 
-            stops.add(latLng);
-          });
+        setState(() {
+          lineStops[file] = stops;
+        });
+      }
     } catch (e) {
-      // Handle errors, e.g., show a snackbar or dialog
       print('Error loading map data: $e');
     } finally {
       setState(() {
@@ -56,86 +113,207 @@ class MapsPageState extends State<MapsPage> {
     }
   }
 
+  void showLineVisibilityBottomSheet(BuildContext context) {
+    Map<String, List<String>> groupedLines = {};
+    for (String line in metroLines) {
+      String city = line.split('/')[2];
+      if (!groupedLines.containsKey(city)) {
+        groupedLines[city] = [];
+      }
+      groupedLines[city]!.add(line);
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 8.0,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          showMetroMapImage(context, 'assets/kyotometro.png');
+                        },
+                        child: Text('Kyoto Metro Map'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          showMetroMapImage(context, 'assets/tokyometro.png');
+                        },
+                        child: Text('Tokyo Metro Map'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          showMetroMapImage(context, 'assets/osakametro.png');
+                        },
+                        child: Text('Osaka Metro Map'),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Afficher/Cacher les lignes de la carte',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    children:
+                        groupedLines.entries.map((entry) {
+                          String city = entry.key;
+                          List<String> lines = entry.value;
+
+                          return ExpansionTile(
+                            title: Text(
+                              "${city[0].toUpperCase()}${city.substring(1)}",
+                            ),
+                            children:
+                                lines.map((line) {
+                                  return CheckboxListTile(
+                                    title: Text(
+                                      'Ligne ${line.split('/').last.split('.').first.toUpperCase()}',
+                                    ),
+                                    value: lineVisibility[line],
+                                    onChanged: (bool? value) {
+                                      setModalState(() {
+                                        lineVisibility[line] = value!;
+                                      });
+                                      setState(() {
+                                        lineVisibility[line] = value!;
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                          );
+                        }).toList(),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void showMetroMapImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      builder:
+          (_) => Dialog(
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              child: InteractiveViewer(child: Image.asset(imagePath)),
+            ),
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Metro Map')),
+      appBar: AppBar(
+        title: const Text('Metro Map'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              showLineVisibilityBottomSheet(context);
+            },
+          ),
+        ],
+      ),
       body:
           isLoading
               ? Center(child: CircularProgressIndicator())
               : FlutterMap(
                 options: MapOptions(
-                  initialCenter: LatLng(35.68, 139.76), // Center of the map
+                  initialCenter: LatLng(35.68, 139.76),
                   initialZoom: 13.0,
                 ),
                 children: [
                   TileLayer(
                     urlTemplate:
-                        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-                    subdomains: ['a', 'b', 'c', 'd'],
+                        'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=$thunderforestApiKey',
+                    subdomains: ['a', 'b', 'c'],
                   ),
-                  // Only render PolylineLayer if `stops` is not empty
-                  if (stops.isNotEmpty)
-                    PolylineLayer(
-                      polylines: [
-                        Polyline(
-                          points: stops,
-                          color: Colors.blue,
-                          strokeWidth: 4.0,
-                        ),
-                      ],
-                    ),
+                  PolylineLayer(
+                    polylines:
+                        lineStops.entries
+                            .where((entry) => lineVisibility[entry.key] == true)
+                            .map((entry) {
+                              final line = entry.key;
+                              final stops = entry.value;
+                              final color = lineColors[line];
+                              return Polyline(
+                                points: stops,
+                                color: color!,
+                                strokeWidth: 4.0,
+                              );
+                            })
+                            .toList(),
+                  ),
                   MarkerLayer(
                     markers:
-                        stops.map((stop) {
-                          return Marker(
-                            width: 80.0,
-                            height: 80.0,
-                            point: stop,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (selectedStops.contains(stop)) {
-                                    selectedStops.remove(
-                                      stop,
-                                    ); // Unselect the stop
-                                  } else {
-                                    selectedStops.add(stop); // Select the stop
-                                  }
-                                });
-                              },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  // The actual marker icon
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Colors.red,
-                                    size: 40.0,
-                                  ),
-                                  // Displaying the name above the marker when selected
-                                  if (selectedStops.contains(stop))
-                                    Positioned(
-                                      bottom:
-                                          50, // This places the name above the marker
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          stopNames[stop] ?? 'Unknown',
-                                          style: TextStyle(
-                                            backgroundColor: Colors.white,
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                        lineStops.entries
+                            .where((entry) => lineVisibility[entry.key] == true)
+                            .expand(
+                              (entry) => entry.value.map((stop) {
+                                final line = entry.key;
+                                final color = lineColors[line];
+                                return Marker(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  point: stop,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (selectedStops.contains(stop)) {
+                                          selectedStops.remove(stop);
+                                        } else {
+                                          selectedStops.add(stop);
+                                        }
+                                      });
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.subway,
+                                          color: color,
+                                          size: 14.0,
                                         ),
-                                      ),
+                                        if (selectedStops.contains(stop))
+                                          Positioned(
+                                            bottom: 50,
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              child: Text(
+                                                stopNames[stop] ?? 'Unknown',
+                                                style: TextStyle(
+                                                  backgroundColor: Colors.white,
+                                                  color: Colors.black,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                                  ),
+                                );
+                              }),
+                            )
+                            .toList(),
                   ),
                 ],
               ),

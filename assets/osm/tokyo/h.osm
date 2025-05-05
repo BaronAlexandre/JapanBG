@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<osm version="0.6" generator="custom_script">
+    <relation id="443272" visible="true" version="1">
+        <member type="node" ref="6219752293" role="stop" lat="35.6440969" lon="139.6987513" name="中目黒" name_en="Naka-meguro" />
+        <member type="node" ref="8014829751" role="stop" lat="35.6469875" lon="139.7086263" name="恵比寿" name_en="Ebisu" />
+        <member type="node" ref="8014829772" role="stop" lat="35.6520769" lon="139.7221799" name="広尾" name_en="Hiro-o" />
+        <member type="node" ref="8014829788" role="stop" lat="35.6628550" lon="139.7313156" name="六本木" name_en="Roppongi" />
+        <member type="node" ref="8014829811" role="stop" lat="35.6630056" lon="139.7450394" name="神谷町" name_en="Kamiyacho" />
+        <member type="node" ref="8014829817" role="stop" lat="35.6674931" lon="139.7478206" name="虎ノ門ヒルズ" name_en="Toranomon Hills" />
+        <member type="node" ref="1926239476" role="stop" lat="35.6738941" lon="139.7510003" name="霞ケ関" name_en="Kasumigaseki" />
+        <member type="node" ref="7883153031" role="stop" lat="35.6744266" lon="139.7603624" name="日比谷" name_en="Hibiya" />
+        <member type="node" ref="2593233094" role="stop" lat="35.6721112" lon="139.7639439" name="銀座" name_en="Ginza" />
+        <member type="node" ref="6293444387" role="stop" lat="35.6697512" lon="139.7669892" name="東銀座" name_en="Higashi-Ginza" />
+        <member type="node" ref="7883332060" role="stop" lat="35.6681010" lon="139.7725834" name="築地" name_en="Tsukiji" />
+        <member type="node" ref="7883332065" role="stop" lat="35.6750179" lon="139.7770290" name="八丁堀" name_en="Hatchobori" />
+        <member type="node" ref="7883332066" role="stop" lat="35.6792641" lon="139.7797162" name="茅場町" name_en="Kayabacho" />
+        <member type="node" ref="7883332074" role="stop" lat="35.6861586" lon="139.7824117" name="人形町" name_en="Ningyocho" />
+        <member type="node" ref="7883332075" role="stop" lat="35.6907400" lon="139.7784319" name="小伝馬町" name_en="Kodemmacho" />
+        <member type="node" ref="7883332084" role="stop" lat="35.6985177" lon="139.7754836" name="秋葉原" name_en="Akihabara" />
+        <member type="node" ref="6352738061" role="stop" lat="35.7065762" lon="139.7761378" name="仲御徒町" name_en="Naka-okachimachi" />
+        <member type="node" ref="8300320717" role="stop" lat="35.7118534" lon="139.7775675" name="上野" name_en="Ueno" />
+        <member type="node" ref="8300320724" role="stop" lat="35.7207339" lon="139.7845703" name="入谷" name_en="Iriya" />
+        <member type="node" ref="8300320729" role="stop" lat="35.7295660" lon="139.7912727" name="三ノ輪" name_en="Minowa" />
+        <member type="node" ref="2180732990" role="stop" lat="35.7323388" lon="139.7987663" name="南千住" name_en="Minami-senju" />
+        <member type="node" ref="6237889014" role="stop" lat="35.7495425" lon="139.8052821" name="北千住" name_en="Kita-Senju" />
+        <member type="way" ref="182161845" role="platform">
+            <nd ref="2503335883" lat="35.6437423" lon="139.6983040" />
+            <nd ref="3656055830" lat="35.6437597" lon="139.6982797" />
+            <nd ref="2503335871" lat="35.6439039" lon="139.6984153" />
+            <nd ref="2503335879" lat="35.6440787" lon="139.6985909" />
+            <nd ref="2503335890" lat="35.6444077" lon="139.6989766" />
+            <nd ref="2503335881" lat="35.6445100" lon="139.6991058" />
+            <nd ref="2503335875" lat="35.6447349" lon="139.6994174" />
+            <nd ref="2503335877" lat="35.6448555" lon="139.6995894" />
+            <nd ref="3656055834" lat="35.6450889" lon="139.6999167" />
+            <nd ref="3656055833" lat="35.6450714" lon="139.6999370" />
+            <nd ref="2503335869" lat="35.6448170" lon="139.6996018" />
+            <nd ref="2503335900" lat="35.6446315" lon="139.6993654" />
+            <nd ref="2503335883" lat="35.6437423" lon="139.6983040" />
+        </member>
+        <member type="way" ref="670343933" role="platform">
+            <nd ref="6277597739" lat="35.6472989" lon="139.7088564" />
+            <nd ref="6277597745" lat="35.6469991" lon="139.7085627" />
+            <nd ref="6277597740" lat="35.6467132" lon="139.7082826" />
+        </member>
+        <member type="way" ref="813431623" role="platform">
+            <nd ref="7598269650" lat="35.6671064" lon="139.7475810" />
+            <nd ref="7598269651" lat="35.6670963" lon="139.7476138" />
+            <nd ref="7598269652" lat="35.6678183" lon="139.7479494" />
+            <nd ref="7598269653" lat="35.6678284" lon="139.7479165" />
+            <nd ref="7603044687" lat="35.6675691" lon="139.7477960" />
+            <nd ref="7598269650" lat="35.6671064" lon="139.7475810" />
+        </member>
+        <member type="way" ref="661481947" role="platform">
+            <nd ref="6193587650" lat="35.6748229" lon="139.7598563" />
+            <nd ref="6192717732" lat="35.6747660" lon="139.7599357" />
+            <nd ref="6192717738" lat="35.6741089" lon="139.7608768" />
+        </member>
+        <member type="way" ref="669739093" role="platform">
+            <nd ref="6271990024" lat="35.6725764" lon="139.7631418" />
+            <nd ref="6271990025" lat="35.6725779" lon="139.7631600" />
+            <nd ref="6272824043" lat="35.6720737" lon="139.7638774" />
+            <nd ref="6272267829" lat="35.6718176" lon="139.7642341" />
+            <nd ref="6272157871" lat="35.6717746" lon="139.7642940" />
+            <nd ref="6272851615" lat="35.6717117" lon="139.7643768" />
+            <nd ref="6272204459" lat="35.6715155" lon="139.7646303" />
+            <nd ref="6271990026" lat="35.6712601" lon="139.7649619" />
+            <nd ref="6271990027" lat="35.6712401" lon="139.7649670" />
+        </member>
+        <member type="way" ref="672046059" role="platform">
+            <nd ref="6293444389" lat="35.6691710" lon="139.7675652" />
+            <nd ref="6293444390" lat="35.6691861" lon="139.7675669" />
+            <nd ref="6293740976" lat="35.6694014" lon="139.7673084" />
+            <nd ref="6293444391" lat="35.6695108" lon="139.7671767" />
+            <nd ref="6293444392" lat="35.6697820" lon="139.7668503" />
+            <nd ref="6293444393" lat="35.6697846" lon="139.7668281" />
+        </member>
+        <member type="way" ref="670581293" role="platform">
+            <nd ref="6279585984" lat="35.6685851" lon="139.7731445" />
+            <nd ref="6279623183" lat="35.6685738" lon="139.7731308" />
+            <nd ref="6279623179" lat="35.6681156" lon="139.7725614" />
+            <nd ref="6279586785" lat="35.6676129" lon="139.7720782" />
+        </member>
+        <member type="way" ref="666792561" role="platform">
+            <nd ref="6243111631" lat="35.6797872" lon="139.7800056" />
+            <nd ref="6244288620" lat="35.6796183" lon="139.7798995" />
+            <nd ref="6244288611" lat="35.6790985" lon="139.7795730" />
+            <nd ref="6243111632" lat="35.6790411" lon="139.7795370" />
+        </member>
+        <member type="way" ref="666915670" role="platform">
+            <nd ref="6244341963" lat="35.6865955" lon="139.7819734" />
+            <nd ref="6244341982" lat="35.6863496" lon="139.7821884" />
+            <nd ref="6244341964" lat="35.6855141" lon="139.7829402" />
+        </member>
+        <member type="way" ref="666373003" role="platform">
+            <nd ref="6238801871" lat="35.6971074" lon="139.7754621" />
+            <nd ref="6238803817" lat="35.6972362" lon="139.7754615" />
+            <nd ref="6238806537" lat="35.6984192" lon="139.7754557" />
+            <nd ref="6238812549" lat="35.6985038" lon="139.7754553" />
+            <nd ref="6238801872" lat="35.6987983" lon="139.7754538" />
+        </member>
+        <member type="way" ref="678457717" role="platform">
+            <nd ref="6352738045" lat="35.7070434" lon="139.7762317" />
+            <nd ref="6352738051" lat="35.7070362" lon="139.7761942" />
+            <nd ref="6352845892" lat="35.7069655" lon="139.7761880" />
+            <nd ref="6352845899" lat="35.7061650" lon="139.7761178" />
+            <nd ref="6352738054" lat="35.7061346" lon="139.7761152" />
+            <nd ref="6352738050" lat="35.7061095" lon="139.7761358" />
+        </member>
+        <member type="way" ref="662754694" role="platform">
+            <nd ref="6204388979" lat="35.7121168" lon="139.7777666" />
+            <nd ref="6204388981" lat="35.7120173" lon="139.7776608" />
+            <nd ref="6204412269" lat="35.7117451" lon="139.7773132" />
+            <nd ref="6204412265" lat="35.7108644" lon="139.7765592" />
+        </member>
+        <member type="way" ref="239021015" role="platform">
+            <nd ref="2468356629" lat="35.7504996" lon="139.8055708" />
+            <nd ref="6238211476" lat="35.7501957" lon="139.8054887" />
+            <nd ref="2468356594" lat="35.7488698" lon="139.8050994" />
+            <nd ref="2468356627" lat="35.7488487" lon="139.8051999" />
+            <nd ref="6238211475" lat="35.7501711" lon="139.8056116" />
+            <nd ref="2468356620" lat="35.7504737" lon="139.8057130" />
+            <nd ref="2468356629" lat="35.7504996" lon="139.8055708" />
+        </member>
+    </relation>
+</osm>

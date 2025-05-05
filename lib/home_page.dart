@@ -116,9 +116,9 @@ class HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 10),
               Text(
-                'Penses à :\n📷 prendre des photos' +
-                    '\n🥤 boire de l\'eau' +
-                    '\n🧸🎁 acheter des souvenirs ',
+                'Penses à :\n📷 prendre des photos'
+                '\n🥤 boire de l\'eau'
+                '\n🧸🎁 acheter des souvenirs',
                 style: theme.textTheme.titleLarge,
               ),
             ],

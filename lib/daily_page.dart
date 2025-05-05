@@ -6,7 +6,6 @@ import 'detaildaily_page.dart';
 class DailyPage extends StatelessWidget {
   const DailyPage({super.key});
 
-  // Liste des jours avec leurs dates et titres
   final List<Map<String, String>> days = const [
     {'title': 'Sam 15 Novembre', 'date': 'Grand départ'},
     {'title': 'Dim 16 Novembre', 'date': 'Arrivée à Tokyo'},
@@ -37,8 +36,8 @@ class DailyPage extends StatelessWidget {
     return Scaffold(
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, // 7 jours par ligne
-          childAspectRatio: 1.2, // Aspect ratio pour avoir un carré ou presque
+          crossAxisCount: 3,
+          childAspectRatio: 1.2,
         ),
         itemCount: days.length,
         itemBuilder: (context, index) {
@@ -49,33 +48,23 @@ class DailyPage extends StatelessWidget {
             margin: const EdgeInsets.all(8.0),
             child: InkWell(
               onTap: () {
-                // Passer l'index + 1 pour désigner le jour sélectionné
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (_) => DayEditorPage(
-                          day: index + 1,
-                        ), // Passer l'index + 1 pour le jour sélectionné
+                    builder: (_) => DayEditorPage(day: index + 1),
                   ),
                 );
               },
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Image de fond avec flou et transparence
                   ImageFiltered(
-                    imageFilter: ImageFilter.blur(
-                      sigmaX: 1,
-                      sigmaY: 1,
-                    ), // Flou léger
+                    imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
                     child: Opacity(
-                      opacity: 0.7, // Transparence de l'image
+                      opacity: 0.7,
                       child: Image.asset(imagePath, fit: BoxFit.cover),
                     ),
                   ),
-
-                  // Numéro en haut a gauche
                   Positioned(
                     top: 8,
                     left: 8,
@@ -98,14 +87,11 @@ class DailyPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Contenu textuel sur fond blanc
                   Center(
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(
-                          alpha: 0.9,
-                        ), // Fond blanc légèrement transparent
+                        color: Colors.white.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
@@ -115,7 +101,7 @@ class DailyPage extends StatelessWidget {
                             day['date'] ?? '',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black, // Texte foncé sur fond clair
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 4),

@@ -24,7 +24,8 @@ dependencies:
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
   xml: ^6.5.0
-  google_maps_flutter: ^2.12.1
+  flutter_map_cancellable_tile_provider: ^3.1.0
+  maplibre_gl: ^0.21.0
 
 dev_dependencies:
   flutter_test:
@@ -36,7 +37,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/group.png
-    - assets/osm/tokyo/g.osm
+
+    - assets/osm/tokyo/
+    - assets/osm/kyoto/
+    - assets/osm/osaka/
 
     - assets/tokyometro.png
     - assets/kyotometro.png

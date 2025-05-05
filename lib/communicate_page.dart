@@ -71,8 +71,8 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Se Présenter et Se Décrire': [
     Phrase(
       francais: 'Je m\'appelle...',
-      japonais: 'わたしの名前は...です',
-      romaji: 'Watashi no namae wa ... desu',
+      japonais: 'わたしは...と言います',
+      romaji: 'Watashi wa ... to iimasu',
       emoji: '🙋',
     ),
     Phrase(
@@ -92,7 +92,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Orientation et Directions': [
     Phrase(
       francais: 'Où est ... ?',
-      japonais: '... はどこですか?',
+      japonais: '...はどこですか？',
       romaji: '... wa doko desu ka?',
       emoji: '📍',
     ),
@@ -111,8 +111,8 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
     Phrase(
       francais: 'Ce train va à ... ?',
-      japonais: 'この電車は...へ行きますか?',
-      romaji: 'Kono densha wa ... e ikimasu ka?',
+      japonais: 'この電車は...に行きますか？',
+      romaji: 'Kono densha wa ... ni ikimasu ka?',
       emoji: '🚆',
     ),
     Phrase(francais: 'À gauche', japonais: '左', romaji: 'Hidari', emoji: '⬅️'),
@@ -134,7 +134,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
     Phrase(
       francais: 'C\'est quoi ce plat ?',
-      japonais: 'これは何ですか?',
+      japonais: 'これは何ですか？',
       romaji: 'Kore wa nan desu ka?',
       emoji: '🍽️',
     ),
@@ -161,13 +161,13 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Shopping et Argent': [
     Phrase(
       francais: 'Y a-t-il un distributeur de billets près d\'ici ?',
-      japonais: '近くにATMはありますか?',
+      japonais: '近くにATMはありますか？',
       romaji: 'Chikaku ni ATM wa arimasu ka?',
       emoji: '💳',
     ),
     Phrase(
       francais: 'Combien ça coûte ?',
-      japonais: 'いくらですか?',
+      japonais: 'いくらですか？',
       romaji: 'Ikura desu ka?',
       emoji: '💰',
     ),
@@ -185,7 +185,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
     Phrase(
       francais: 'Avez-vous la taille M ?',
-      japonais: 'Mサイズはありますか?',
+      japonais: 'Mサイズはありますか？',
       romaji: 'M saizu wa arimasu ka?',
       emoji: '📏',
     ),
@@ -209,8 +209,8 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Loisirs et Visites Culturelles': [
     Phrase(
       francais: 'Pouvez-vous me recommander un musée ?',
-      japonais: '博物館をおすすめできますか？',
-      romaji: 'Hakubutsukan o osusume dekimasu ka?',
+      japonais: 'おすすめの博物館はありますか？',
+      romaji: 'Osusume no hakubutsukan wa arimasu ka?',
       emoji: '🖼️',
     ),
     Phrase(
@@ -226,6 +226,12 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
       romaji: 'Sakura o miru no ni ichiban ii basho wa doko desu ka?',
       emoji: '🌸',
     ),
+    Phrase(
+      francais: 'Y a-t-il un tampon du lieu ?',
+      japonais: 'この場所のスタンプはありますか？',
+      romaji: 'Kono basho no sutanpu wa arimasu ka?',
+      emoji: '🖋️',
+    ),
   ],
 
   'Langue et Communication': [
@@ -240,6 +246,28 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
       japonais: '日本語が上手ではありません',
       romaji: 'Nihongo ga jouzu de wa arimasen',
       emoji: '😅',
+    ),
+  ],
+
+  'Nombre': [
+    Phrase(francais: 'zéro 0', japonais: 'ゼロ', romaji: 'Zero', emoji: '0️⃣'),
+    Phrase(francais: 'un 1', japonais: '一', romaji: 'Ichi', emoji: '1️⃣'),
+    Phrase(francais: 'deux 2', japonais: '二', romaji: 'Ni', emoji: '2️⃣'),
+    Phrase(francais: 'trois 3', japonais: '三', romaji: 'San', emoji: '3️⃣'),
+    Phrase(francais: 'quatre 4', japonais: '四', romaji: 'Yon', emoji: '4️⃣'),
+    Phrase(francais: 'cinq 5', japonais: '五', romaji: 'Go', emoji: '5️⃣'),
+    Phrase(francais: 'six 6', japonais: '六', romaji: 'Roku', emoji: '6️⃣'),
+    Phrase(francais: 'sept 7', japonais: '七', romaji: 'Nana', emoji: '7️⃣'),
+    Phrase(francais: 'huit 8', japonais: '八', romaji: 'Hachi', emoji: '8️⃣'),
+    Phrase(francais: 'neuf 9', japonais: '九', romaji: 'Kyuu', emoji: '9️⃣'),
+    Phrase(francais: 'dix 10', japonais: '十', romaji: 'Juu', emoji: '🔟'),
+    Phrase(francais: 'cent 100', japonais: '百', romaji: 'Hyaku', emoji: '💯'),
+    Phrase(francais: 'mille 1000', japonais: '千', romaji: 'Sen', emoji: '🔢'),
+    Phrase(
+      francais: 'dix mille',
+      japonais: '一万',
+      romaji: 'Ichiman',
+      emoji: '🔟➕',
     ),
   ],
 };
@@ -408,6 +436,7 @@ class PhraseSearchDelegate extends SearchDelegate<String> {
         icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
+          showSuggestions(context);
         },
       ),
     ];

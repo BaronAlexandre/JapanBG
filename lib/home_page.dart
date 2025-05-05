@@ -71,15 +71,6 @@ class HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  'assets/group.png',
-                  fit: BoxFit.cover,
-                  height: 450,
-                ),
-              ),
-              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -114,12 +105,21 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Text(
                 'Penses à :\n📷 prendre des photos'
                 '\n🥤 boire de l\'eau'
                 '\n🧸🎁 acheter des souvenirs',
                 style: theme.textTheme.titleLarge,
+              ),
+              const SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  'assets/group.png',
+                  fit: BoxFit.cover,
+                  height: 450,
+                ),
               ),
             ],
           ),

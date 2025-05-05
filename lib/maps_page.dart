@@ -68,7 +68,7 @@ class MapsPageState extends State<MapsPage> {
     'assets/osm/osaka/yotsubashi.osm': Colors.blueAccent,
   };
 
-  final String thunderforestApiKey = '<TOKEN API>';
+  final String thunderforestApiKey = '<Token API>';
 
   @override
   void initState() {
@@ -178,8 +178,26 @@ class MapsPageState extends State<MapsPage> {
                             children:
                                 lines.map((line) {
                                   return CheckboxListTile(
-                                    title: Text(
-                                      'Ligne ${line.split('/').last.split('.').first.toUpperCase()}',
+                                    title: RichText(
+                                      text: TextSpan(
+                                        style:
+                                            DefaultTextStyle.of(context).style,
+                                        children: [
+                                          const TextSpan(text: 'Ligne '),
+                                          TextSpan(
+                                            text:
+                                                line
+                                                    .split('/')
+                                                    .last
+                                                    .split('.')
+                                                    .first
+                                                    .toUpperCase(),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     value: lineVisibility[line],
                                     onChanged: (bool? value) {

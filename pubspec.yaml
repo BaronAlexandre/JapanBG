@@ -19,15 +19,23 @@ dependencies:
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
   url_launcher: ^6.3.1
-  intl: ^0.20.2
+  intl: ^0.19.0
   flutter_polyline_points: ^2.1.0
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
   xml: ^6.5.0
   flutter_map_cancellable_tile_provider: ^3.1.0
   maplibre_gl: ^0.21.0
+  flutter_quill: ^11.0.0
+  flutter_quill_extensions: ^11.0.0
+  file_picker: ^10.1.2
+
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
+  dependency_validator: ^5.0.2
+
   flutter_test:
     sdk: flutter
 
@@ -42,28 +50,8 @@ flutter:
     - assets/osm/kyoto/
     - assets/osm/osaka/
 
+    - assets/cards/
+    
     - assets/tokyometro.png
     - assets/kyotometro.png
     - assets/osakametro.png
-    - assets/cards/1.png
-    - assets/cards/2.png
-    - assets/cards/3.png
-    - assets/cards/4.png
-    - assets/cards/5.png
-    - assets/cards/6.png
-    - assets/cards/7.png
-    - assets/cards/8.png
-    - assets/cards/9.png
-    - assets/cards/10.png
-    - assets/cards/11.png
-    - assets/cards/12.png
-    - assets/cards/13.png
-    - assets/cards/14.png
-    - assets/cards/15.png
-    - assets/cards/16.png
-    - assets/cards/17.png
-    - assets/cards/18.png
-    - assets/cards/19.png
-    - assets/cards/20.png
-    - assets/cards/21.png
-    - assets/cards/22.png

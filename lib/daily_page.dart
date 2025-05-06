@@ -36,7 +36,7 @@ class DailyPage extends StatelessWidget {
     return Scaffold(
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 4,
           childAspectRatio: 1.2,
         ),
         itemCount: days.length,

@@ -68,7 +68,7 @@ class MapsPageState extends State<MapsPage> {
     'assets/osm/osaka/yotsubashi.osm': Colors.blueAccent,
   };
 
-  final String thunderforestApiKey = '<Token API>';
+  final String thunderforestApiKey = '<TOKEN API>';
 
   @override
   void initState() {

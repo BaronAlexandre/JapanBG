@@ -71,22 +71,24 @@ class HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
+              Text(
+                '🕐 Heures 🕐',
+                style: theme.textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('🇯🇵', style: TextStyle(fontSize: 32)),
+                  Text('🇯🇵', style: theme.textTheme.titleLarge),
                   const SizedBox(width: 10),
-                  Text(
-                    _japanTime,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
+                  Text(_japanTime, style: theme.textTheme.titleLarge),
                   const SizedBox(width: 32),
-                  Text('🇫🇷', style: TextStyle(fontSize: 24)),
+                  Text("➡️ +7H ➡️", style: theme.textTheme.titleLarge),
+                  const SizedBox(width: 32),
+                  Text('🇫🇷', style: theme.textTheme.titleLarge),
                   const SizedBox(width: 10),
-                  Text(
-                    _franceTime,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
+                  Text(_franceTime, style: theme.textTheme.titleLarge),
                 ],
               ),
               const SizedBox(height: 20),
@@ -110,7 +112,7 @@ class HomePageState extends State<HomePage> {
                 'Penses à :\n📷 prendre des photos'
                 '\n🥤 boire de l\'eau'
                 '\n🧸🎁 acheter des souvenirs',
-                style: theme.textTheme.titleLarge,
+                style: theme.textTheme.titleSmall,
               ),
               const SizedBox(height: 20),
               ClipRRect(

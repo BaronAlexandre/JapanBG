@@ -24,4 +24,4 @@ Pour build l'apk
 flutter build apk
 ```
 
-Et ensuite tu peux te l'envoyer par mail ou autre 
+Et ensuite si tu commits et push l'apk, elle est dispo [ici](https://github.com/BaronAlexandre/JapanBG/raw/master/build/app/outputs/flutter-apk/app-release.apk)

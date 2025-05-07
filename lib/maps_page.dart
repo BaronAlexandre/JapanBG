@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart' as xml;
 
@@ -51,7 +52,7 @@ class MapsPageState extends State<MapsPage> {
     'assets/osm/tokyo/m.osm': Colors.red,
     'assets/osm/tokyo/n.osm': Colors.teal,
     'assets/osm/tokyo/t.osm': Colors.lightBlue,
-    'assets/osm/tokyo/y.osm': Colors.yellow,
+    'assets/osm/tokyo/y.osm': Colors.yellowAccent,
     'assets/osm/tokyo/z.osm': Colors.purple,
 
     'assets/osm/kyoto/karasuma.osm': Colors.green,
@@ -132,9 +133,9 @@ class MapsPageState extends State<MapsPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(1.0),
                   child: Wrap(
-                    spacing: 8.0,
+                    spacing: 1.0,
                     children: [
                       ElevatedButton(
                         onPressed: () {
@@ -192,8 +193,9 @@ class MapsPageState extends State<MapsPage> {
                                                     .split('.')
                                                     .first
                                                     .toUpperCase(),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
+                                              color: lineColors[line],
                                             ),
                                           ),
                                         ],
@@ -223,15 +225,28 @@ class MapsPageState extends State<MapsPage> {
   }
 
   void showMetroMapImage(BuildContext context, String imagePath) {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder:
-          (_) => Dialog(
-            child: Container(
-              padding: EdgeInsets.all(8.0),
-              child: InteractiveViewer(child: Image.asset(imagePath)),
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: GestureDetector(
+                onTap: () {},
+                child: InteractiveViewer(
+                  child: Image.asset(imagePath, fit: BoxFit.contain),
+                ),
+              ),
             ),
           ),
+        );
+      },
     );
   }
 
@@ -256,12 +271,18 @@ class MapsPageState extends State<MapsPage> {
                 options: MapOptions(
                   initialCenter: LatLng(35.68, 139.76),
                   initialZoom: 13.0,
+                  interactionOptions: const InteractionOptions(
+                    flags:
+                        InteractiveFlag.pinchZoom |
+                        InteractiveFlag.drag |
+                        InteractiveFlag.scrollWheelZoom,
+                  ),
                 ),
                 children: [
                   TileLayer(
                     urlTemplate:
-                        'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=$thunderforestApiKey',
-                    subdomains: ['a', 'b', 'c'],
+                        'https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=$thunderforestApiKey',
+                    tileProvider: CancellableNetworkTileProvider(),
                   ),
                   PolylineLayer(
                     polylines:

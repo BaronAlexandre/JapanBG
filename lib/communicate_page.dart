@@ -270,18 +270,48 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
       emoji: '🔟➕',
     ),
   ],
+  'Mots Utiles': [
+    Phrase(francais: 'Argent', japonais: 'お金', romaji: 'Okane', emoji: '💴'),
+    Phrase(francais: 'Temple', japonais: '寺', romaji: 'Tera', emoji: '⛩️'),
+    Phrase(francais: 'Où', japonais: 'どこ', romaji: 'Doko', emoji: '❓'),
+    Phrase(
+      francais: 'Ticket / Billet',
+      japonais: '切符',
+      romaji: 'Kippu',
+      emoji: '🎫',
+    ),
+    Phrase(
+      francais: 'Entrée',
+      japonais: '入口',
+      romaji: 'Iriguichi',
+      emoji: '🚪',
+    ),
+    Phrase(francais: 'Sortie', japonais: '出口', romaji: 'Deguchi', emoji: '🚪'),
+    Phrase(francais: 'Police', japonais: '警察', romaji: 'Keisatsu', emoji: '👮'),
+    Phrase(francais: 'Hôpital', japonais: '病院', romaji: 'Byouin', emoji: '🏥'),
+    Phrase(francais: 'Urgence', japonais: '緊急', romaji: 'Kinkyuu', emoji: '🚨'),
+    Phrase(francais: 'Rue', japonais: '道', romaji: 'Michi', emoji: '🛣️'),
+    Phrase(francais: 'Carte', japonais: '地図', romaji: 'Chizu', emoji: '🗺️'),
+    Phrase(francais: 'Taxi', japonais: 'タクシー', romaji: 'Takushii', emoji: '🚕'),
+    Phrase(
+      francais: 'Station de métro',
+      japonais: '地下鉄の駅',
+      romaji: 'Chikatetsu no eki',
+      emoji: '🚇',
+    ),
+  ],
 };
 
 class CommunicatePage extends StatefulWidget {
   const CommunicatePage({super.key});
 
   @override
-  _CommunicatePageState createState() => _CommunicatePageState();
+  CommunicatePageState createState() => CommunicatePageState();
 }
 
-class _CommunicatePageState extends State<CommunicatePage> {
-  String _searchQuery = '';
-  bool _isSearching = false;
+class CommunicatePageState extends State<CommunicatePage> {
+  final String _searchQuery = '';
+  final bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -323,22 +353,6 @@ class _CommunicatePageState extends State<CommunicatePage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Rechercher une phrase...',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (query) {
-                setState(() {
-                  _searchQuery = query;
-                  _isSearching = query.isNotEmpty;
-                });
-              },
-            ),
-          ),
           Expanded(
             child:
                 _isSearching

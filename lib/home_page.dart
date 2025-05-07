@@ -56,74 +56,75 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Card(
-      shadowColor: Colors.transparent,
-      margin: const EdgeInsets.all(8.0),
-      child: SizedBox.expand(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '🇯🇵 Voyage au Japon 2025 ! 🇯🇵',
-                style: theme.textTheme.headlineMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                '🕐 Heures 🕐',
-                style: theme.textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('🇯🇵', style: theme.textTheme.titleLarge),
-                  const SizedBox(width: 10),
-                  Text(_japanTime, style: theme.textTheme.titleLarge),
-                  const SizedBox(width: 32),
-                  Text("➡️ +7H ➡️", style: theme.textTheme.titleLarge),
-                  const SizedBox(width: 32),
-                  Text('🇫🇷', style: theme.textTheme.titleLarge),
-                  const SizedBox(width: 10),
-                  Text(_franceTime, style: theme.textTheme.titleLarge),
-                ],
-              ),
-              const SizedBox(height: 20),
-              InkWell(
-                onTap: () {
-                  launchUrl(
-                    Uri.parse(
-                      'https://docs.google.com/document/d/1z8F9iDIbLCFe-gv78VDf_DHvopjSITw7aNXtdQ-pn7U/edit',
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SizedBox.expand(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '🇯🇵 Voyage au Japon 2025 ! 🇯🇵',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  '🕐 Heures 🕐',
+                  style: theme.textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('🇯🇵', style: theme.textTheme.titleLarge),
+                    const SizedBox(width: 10),
+                    Text(_japanTime, style: theme.textTheme.titleLarge),
+                    const SizedBox(width: 10),
+                    Text("➡️ +7H ➡️", style: theme.textTheme.titleLarge),
+                    const SizedBox(width: 10),
+                    Text('🇫🇷', style: theme.textTheme.titleLarge),
+                    const SizedBox(width: 10),
+                    Text(_franceTime, style: theme.textTheme.titleLarge),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    launchUrl(
+                      Uri.parse(
+                        'https://docs.google.com/document/d/1z8F9iDIbLCFe-gv78VDf_DHvopjSITw7aNXtdQ-pn7U/edit',
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Voir le Google doc',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.blue,
                     ),
-                  );
-                },
-                child: Text(
-                  'Voir le Google doc',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.blue,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Penses à :\n📷 prendre des photos'
-                '\n🥤 boire de l\'eau'
-                '\n🧸🎁 acheter des souvenirs',
-                style: theme.textTheme.titleSmall,
-              ),
-              const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  'assets/group.png',
-                  fit: BoxFit.cover,
-                  height: 450,
+                const SizedBox(height: 20),
+                Text(
+                  'Penses à :\n📷 prendre des photos'
+                  '\n🥤 boire de l\'eau'
+                  '\n🧸🎁 acheter des souvenirs',
+                  style: theme.textTheme.titleSmall,
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.asset(
+                    'assets/group.png',
+                    fit: BoxFit.cover,
+                    height: 450,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

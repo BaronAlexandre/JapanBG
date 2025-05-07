@@ -97,6 +97,9 @@ class _NavigationExampleState extends State<NavigationExample> {
             label: 'Maps',
           ),
         ],
+        labelTextStyle: WidgetStateProperty.all(
+          const TextStyle(fontSize: 10.0, fontWeight: FontWeight.bold),
+        ),
       ),
       body: pages[currentPageIndex],
     );

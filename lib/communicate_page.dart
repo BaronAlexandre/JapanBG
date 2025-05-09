@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 class Phrase {
   final String francais;
@@ -301,7 +302,6 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
   ],
 };
-
 class CommunicatePage extends StatefulWidget {
   const CommunicatePage({super.key});
 
@@ -312,29 +312,52 @@ class CommunicatePage extends StatefulWidget {
 class CommunicatePageState extends State<CommunicatePage> {
   final String _searchQuery = '';
   final bool _isSearching = false;
+  final TextEditingController _textEditingController = TextEditingController();
+  String _translatedText = '';
+  final OnDeviceTranslator _translator = OnDeviceTranslator(
+    sourceLanguage: TranslateLanguage.french,
+    targetLanguage: TranslateLanguage.japanese,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _downloadModels();
+  }
+
+  Future<void> _downloadModels() async {
+    final modelManager = OnDeviceTranslatorModelManager();
+    await modelManager.downloadModel(TranslateLanguage.french.bcpCode);
+    await modelManager.downloadModel(TranslateLanguage.japanese.bcpCode);
+  }
+
+  Future<void> _translateText() async {
+    final result = await _translator.translateText(_textEditingController.text);
+    setState(() {
+      _translatedText = result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final filteredPhrases =
-        phrasesParCategorie.entries
-            .map((entry) {
-              final filteredList =
-                  entry.value.where((phrase) {
-                    return phrase.francais.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        ) ||
-                        phrase.japonais.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        ) ||
-                        phrase.romaji.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        );
-                  }).toList();
+    final filteredPhrases = phrasesParCategorie.entries
+        .map((entry) {
+          final filteredList = entry.value.where((phrase) {
+            return phrase.francais.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    ) ||
+                phrase.japonais.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    ) ||
+                phrase.romaji.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    );
+          }).toList();
 
-              return MapEntry(entry.key, filteredList);
-            })
-            .where((entry) => entry.value.isNotEmpty)
-            .toList();
+          return MapEntry(entry.key, filteredList);
+        })
+        .where((entry) => entry.value.isNotEmpty)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -353,88 +376,103 @@ class CommunicatePageState extends State<CommunicatePage> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                labelText: 'Texte à traduire',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.translate),
+                  onPressed: _translateText,
+                ),
+              ),
+            ),
+          ),
+          if (_translatedText.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _translatedText,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
           Expanded(
-            child:
-                _isSearching
-                    ? ListView(
-                      children:
-                          filteredPhrases.expand((entry) {
-                            return entry.value.map((phrase) {
-                              return ListTile(
-                                leading: Text(
-                                  phrase.emoji,
-                                  style: const TextStyle(fontSize: 24),
+            child: _isSearching
+                ? ListView(
+                    children: filteredPhrases.expand((entry) {
+                      return entry.value.map((phrase) {
+                        return ListTile(
+                          leading: Text(
+                            phrase.emoji,
+                            style: const TextStyle(fontSize: 24),
+                          ),
+                          title: Text(phrase.francais),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  phrase.japonais,
+                                  style: const TextStyle(fontSize: 16),
                                 ),
-                                title: Text(phrase.francais),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        phrase.japonais,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        phrase.romaji,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
+                                Text(
+                                  phrase.romaji,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
                                   ),
                                 ),
-                              );
-                            }).toList();
-                          }).toList(),
-                    )
-                    : ListView(
-                      children:
-                          phrasesParCategorie.entries.map((entry) {
-                            return ExpansionTile(
-                              title: Text(
-                                entry.key,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList();
+                    }).toList(),
+                  )
+                : ListView(
+                    children: phrasesParCategorie.entries.map((entry) {
+                      return ExpansionTile(
+                        title: Text(
+                          entry.key,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        children: entry.value.map((phrase) {
+                          return ListTile(
+                            leading: Text(
+                              phrase.emoji,
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                            title: Text(phrase.francais),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 4.0,
                               ),
-                              children:
-                                  entry.value.map((phrase) {
-                                    return ListTile(
-                                      leading: Text(
-                                        phrase.emoji,
-                                        style: const TextStyle(fontSize: 24),
-                                      ),
-                                      title: Text(phrase.francais),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 4.0,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              phrase.japonais,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              phrase.romaji,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                            );
-                          }).toList(),
-                    ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    phrase.japonais,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    phrase.romaji,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }).toList(),
+                  ),
           ),
         ],
       ),
@@ -468,111 +506,105 @@ class PhraseSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final results =
-        phrasesParCategorie.entries
-            .map((entry) {
-              final filteredList =
-                  entry.value.where((phrase) {
-                    return phrase.francais.toLowerCase().contains(
-                          query.toLowerCase(),
-                        ) ||
-                        phrase.japonais.toLowerCase().contains(
-                          query.toLowerCase(),
-                        ) ||
-                        phrase.romaji.toLowerCase().contains(
-                          query.toLowerCase(),
-                        );
-                  }).toList();
+    final results = phrasesParCategorie.entries
+        .map((entry) {
+          final filteredList = entry.value.where((phrase) {
+            return phrase.francais.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                phrase.japonais.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                phrase.romaji.toLowerCase().contains(
+                      query.toLowerCase(),
+                    );
+          }).toList();
 
-              return MapEntry(entry.key, filteredList);
-            })
-            .where((entry) => entry.value.isNotEmpty)
-            .toList();
+          return MapEntry(entry.key, filteredList);
+        })
+        .where((entry) => entry.value.isNotEmpty)
+        .toList();
 
     return ListView(
-      children:
-          results.expand((entry) {
-            return entry.value.map((phrase) {
-              return ListTile(
-                leading: Text(
-                  phrase.emoji,
-                  style: const TextStyle(fontSize: 24),
-                ),
-                title: Text(phrase.francais),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        phrase.japonais,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        phrase.romaji,
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
+      children: results.expand((entry) {
+        return entry.value.map((phrase) {
+          return ListTile(
+            leading: Text(
+              phrase.emoji,
+              style: const TextStyle(fontSize: 24),
+            ),
+            title: Text(phrase.francais),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    phrase.japonais,
+                    style: const TextStyle(fontSize: 16),
                   ),
-                ),
-              );
-            }).toList();
-          }).toList(),
+                  Text(
+                    phrase.romaji,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList();
+      }).toList(),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestions =
-        phrasesParCategorie.entries
-            .map((entry) {
-              final filteredList =
-                  entry.value.where((phrase) {
-                    return phrase.francais.toLowerCase().contains(
-                          query.toLowerCase(),
-                        ) ||
-                        phrase.japonais.toLowerCase().contains(
-                          query.toLowerCase(),
-                        ) ||
-                        phrase.romaji.toLowerCase().contains(
-                          query.toLowerCase(),
-                        );
-                  }).toList();
+    final suggestions = phrasesParCategorie.entries
+        .map((entry) {
+          final filteredList = entry.value.where((phrase) {
+            return phrase.francais.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                phrase.japonais.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                phrase.romaji.toLowerCase().contains(
+                      query.toLowerCase(),
+                    );
+          }).toList();
 
-              return MapEntry(entry.key, filteredList);
-            })
-            .where((entry) => entry.value.isNotEmpty)
-            .toList();
+          return MapEntry(entry.key, filteredList);
+        })
+        .where((entry) => entry.value.isNotEmpty)
+        .toList();
 
     return ListView(
-      children:
-          suggestions.expand((entry) {
-            return entry.value.map((phrase) {
-              return ListTile(
-                leading: Text(
-                  phrase.emoji,
-                  style: const TextStyle(fontSize: 24),
-                ),
-                title: Text(phrase.francais),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        phrase.japonais,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        phrase.romaji,
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
+      children: suggestions.expand((entry) {
+        return entry.value.map((phrase) {
+          return ListTile(
+            leading: Text(
+              phrase.emoji,
+              style: const TextStyle(fontSize: 24),
+            ),
+            title: Text(phrase.francais),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    phrase.japonais,
+                    style: const TextStyle(fontSize: 16),
                   ),
-                ),
-              );
-            }).toList();
-          }).toList(),
+                  Text(
+                    phrase.romaji,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList();
+      }).toList(),
     );
   }
 }

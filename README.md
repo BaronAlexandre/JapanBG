@@ -1,16 +1,27 @@
-# japanbg
+# Le gang des BG au Japon
 
-A new Flutter project.
+Appli mobile en flutter
+- [Installer flutter](https://docs.flutter.dev/get-started/install)
+(Dépend si vous êtes sous linux ou windows)
 
-## Getting Started
+## Lancement du projet
 
-This project is a starting point for a Flutter application.
+```console
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Build de l'apk (Android)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Vérifier la config
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```console
+flutter doctor
+```
+
+Pour build l'apk
+
+```console
+flutter build apk
+```
+
+Et ensuite si tu commits et push l'apk, elle est dispo [ici](https://github.com/BaronAlexandre/JapanBG/raw/master/build/app/outputs/flutter-apk/app-release.apk)

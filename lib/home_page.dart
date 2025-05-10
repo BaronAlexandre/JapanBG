@@ -70,10 +70,10 @@ class HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 Text(
                   '🕐 Heures 🕐',
-                  style: theme.textTheme.titleLarge,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
@@ -84,14 +84,18 @@ class HomePageState extends State<HomePage> {
                     const SizedBox(width: 10),
                     Text(_japanTime, style: theme.textTheme.titleLarge),
                     const SizedBox(width: 10),
-                    Text("➡️ +7H ➡️", style: theme.textTheme.titleLarge),
+                    Text(
+                      "➡️\n+7H",
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(width: 10),
                     Text('🇫🇷', style: theme.textTheme.titleLarge),
                     const SizedBox(width: 10),
                     Text(_franceTime, style: theme.textTheme.titleLarge),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 InkWell(
                   onTap: () {
                     launchUrl(
@@ -101,7 +105,19 @@ class HomePageState extends State<HomePage> {
                     );
                   },
                   child: Text(
-                    'Voir le Google doc',
+                    'Google doc',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    launchUrl(Uri.parse('tricount://join/tfRJjnuLUyEpVBOdwf'));
+                  },
+                  child: Text(
+                    'Tricount',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.blue,
                     ),
@@ -120,7 +136,7 @@ class HomePageState extends State<HomePage> {
                   child: Image.asset(
                     'assets/group.png',
                     fit: BoxFit.cover,
-                    height: 450,
+                    height: 300,
                   ),
                 ),
               ],

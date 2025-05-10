@@ -319,6 +319,54 @@ class _DayEditorPageState extends State<DayEditorPage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        height: 50, // Ajustez la hauteur selon vos besoins
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            if (widget.day > 1) // Ne pas afficher si c'est le premier jour
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DayEditorPage(day: widget.day - 1),
+                        ),
+                      );
+                    },
+                  ),
+                  Text('J${widget.day - 1}'),
+                ],
+              )
+            else
+              SizedBox(width: 60),
+
+            if (widget.day < 22)
+              Row(
+                children: [
+                  Text('J${widget.day + 1}'),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DayEditorPage(day: widget.day + 1),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
+            else
+              SizedBox(width: 60),
+          ],
+        ),
+      ),
     );
   }
 }

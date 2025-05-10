@@ -302,6 +302,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
   ],
 };
+
 class CommunicatePage extends StatefulWidget {
   const CommunicatePage({super.key});
 
@@ -340,24 +341,26 @@ class CommunicatePageState extends State<CommunicatePage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPhrases = phrasesParCategorie.entries
-        .map((entry) {
-          final filteredList = entry.value.where((phrase) {
-            return phrase.francais.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    ) ||
-                phrase.japonais.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    ) ||
-                phrase.romaji.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    );
-          }).toList();
+    final filteredPhrases =
+        phrasesParCategorie.entries
+            .map((entry) {
+              final filteredList =
+                  entry.value.where((phrase) {
+                    return phrase.francais.toLowerCase().contains(
+                          _searchQuery.toLowerCase(),
+                        ) ||
+                        phrase.japonais.toLowerCase().contains(
+                          _searchQuery.toLowerCase(),
+                        ) ||
+                        phrase.romaji.toLowerCase().contains(
+                          _searchQuery.toLowerCase(),
+                        );
+                  }).toList();
 
-          return MapEntry(entry.key, filteredList);
-        })
-        .where((entry) => entry.value.isNotEmpty)
-        .toList();
+              return MapEntry(entry.key, filteredList);
+            })
+            .where((entry) => entry.value.isNotEmpty)
+            .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -394,85 +397,94 @@ class CommunicatePageState extends State<CommunicatePage> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 _translatedText,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           Expanded(
-            child: _isSearching
-                ? ListView(
-                    children: filteredPhrases.expand((entry) {
-                      return entry.value.map((phrase) {
-                        return ListTile(
-                          leading: Text(
-                            phrase.emoji,
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                          title: Text(phrase.francais),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  phrase.japonais,
-                                  style: const TextStyle(fontSize: 16),
+            child:
+                _isSearching
+                    ? ListView(
+                      children:
+                          filteredPhrases.expand((entry) {
+                            return entry.value.map((phrase) {
+                              return ListTile(
+                                leading: Text(
+                                  phrase.emoji,
+                                  style: const TextStyle(fontSize: 24),
                                 ),
-                                Text(
-                                  phrase.romaji,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
+                                title: Text(phrase.francais),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        phrase.japonais,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      Text(
+                                        phrase.romaji,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList();
-                    }).toList(),
-                  )
-                : ListView(
-                    children: phrasesParCategorie.entries.map((entry) {
-                      return ExpansionTile(
-                        title: Text(
-                          entry.key,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        children: entry.value.map((phrase) {
-                          return ListTile(
-                            leading: Text(
-                              phrase.emoji,
-                              style: const TextStyle(fontSize: 24),
-                            ),
-                            title: Text(phrase.francais),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 4.0,
+                              );
+                            }).toList();
+                          }).toList(),
+                    )
+                    : ListView(
+                      children:
+                          phrasesParCategorie.entries.map((entry) {
+                            return ExpansionTile(
+                              title: Text(
+                                entry.key,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    phrase.japonais,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    phrase.romaji,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    }).toList(),
-                  ),
+                              children:
+                                  entry.value.map((phrase) {
+                                    return ListTile(
+                                      leading: Text(
+                                        phrase.emoji,
+                                        style: const TextStyle(fontSize: 24),
+                                      ),
+                                      title: Text(phrase.francais),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 4.0,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              phrase.japonais,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Text(
+                                              phrase.romaji,
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                            );
+                          }).toList(),
+                    ),
           ),
         ],
       ),
@@ -506,105 +518,111 @@ class PhraseSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final results = phrasesParCategorie.entries
-        .map((entry) {
-          final filteredList = entry.value.where((phrase) {
-            return phrase.francais.toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                phrase.japonais.toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                phrase.romaji.toLowerCase().contains(
-                      query.toLowerCase(),
-                    );
-          }).toList();
+    final results =
+        phrasesParCategorie.entries
+            .map((entry) {
+              final filteredList =
+                  entry.value.where((phrase) {
+                    return phrase.francais.toLowerCase().contains(
+                          query.toLowerCase(),
+                        ) ||
+                        phrase.japonais.toLowerCase().contains(
+                          query.toLowerCase(),
+                        ) ||
+                        phrase.romaji.toLowerCase().contains(
+                          query.toLowerCase(),
+                        );
+                  }).toList();
 
-          return MapEntry(entry.key, filteredList);
-        })
-        .where((entry) => entry.value.isNotEmpty)
-        .toList();
+              return MapEntry(entry.key, filteredList);
+            })
+            .where((entry) => entry.value.isNotEmpty)
+            .toList();
 
     return ListView(
-      children: results.expand((entry) {
-        return entry.value.map((phrase) {
-          return ListTile(
-            leading: Text(
-              phrase.emoji,
-              style: const TextStyle(fontSize: 24),
-            ),
-            title: Text(phrase.francais),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    phrase.japonais,
-                    style: const TextStyle(fontSize: 16),
+      children:
+          results.expand((entry) {
+            return entry.value.map((phrase) {
+              return ListTile(
+                leading: Text(
+                  phrase.emoji,
+                  style: const TextStyle(fontSize: 24),
+                ),
+                title: Text(phrase.francais),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        phrase.japonais,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        phrase.romaji,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  Text(
-                    phrase.romaji,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }).toList();
-      }).toList(),
+                ),
+              );
+            }).toList();
+          }).toList(),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestions = phrasesParCategorie.entries
-        .map((entry) {
-          final filteredList = entry.value.where((phrase) {
-            return phrase.francais.toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                phrase.japonais.toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                phrase.romaji.toLowerCase().contains(
-                      query.toLowerCase(),
-                    );
-          }).toList();
+    final suggestions =
+        phrasesParCategorie.entries
+            .map((entry) {
+              final filteredList =
+                  entry.value.where((phrase) {
+                    return phrase.francais.toLowerCase().contains(
+                          query.toLowerCase(),
+                        ) ||
+                        phrase.japonais.toLowerCase().contains(
+                          query.toLowerCase(),
+                        ) ||
+                        phrase.romaji.toLowerCase().contains(
+                          query.toLowerCase(),
+                        );
+                  }).toList();
 
-          return MapEntry(entry.key, filteredList);
-        })
-        .where((entry) => entry.value.isNotEmpty)
-        .toList();
+              return MapEntry(entry.key, filteredList);
+            })
+            .where((entry) => entry.value.isNotEmpty)
+            .toList();
 
     return ListView(
-      children: suggestions.expand((entry) {
-        return entry.value.map((phrase) {
-          return ListTile(
-            leading: Text(
-              phrase.emoji,
-              style: const TextStyle(fontSize: 24),
-            ),
-            title: Text(phrase.francais),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    phrase.japonais,
-                    style: const TextStyle(fontSize: 16),
+      children:
+          suggestions.expand((entry) {
+            return entry.value.map((phrase) {
+              return ListTile(
+                leading: Text(
+                  phrase.emoji,
+                  style: const TextStyle(fontSize: 24),
+                ),
+                title: Text(phrase.francais),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        phrase.japonais,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        phrase.romaji,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  Text(
-                    phrase.romaji,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }).toList();
-      }).toList(),
+                ),
+              );
+            }).toList();
+          }).toList(),
     );
   }
 }

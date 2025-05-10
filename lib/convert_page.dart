@@ -49,7 +49,6 @@ class ConvertPageState extends State<ConvertPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(title: Text('Convertisseur')),
       body: Padding(
@@ -79,7 +78,9 @@ class ConvertPageState extends State<ConvertPage> {
             SizedBox(height: 16.0),
             RichText(
               text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+                style: DefaultTextStyle.of(
+                  context,
+                ).style.copyWith(fontSize: 10),
                 children: [
                   TextSpan(text: 'Le taux de change est '),
                   TextSpan(
@@ -91,7 +92,10 @@ class ConvertPageState extends State<ConvertPage> {
             ),
             Row(
               children: [
-                Text("S'il a varié, il est disponible ici : "),
+                Text(
+                  "S'il a varié, il est disponible ici : ",
+                  style: TextStyle(fontSize: 10),
+                ),
                 InkWell(
                   onTap: () {
                     launchUrl(
@@ -100,9 +104,7 @@ class ConvertPageState extends State<ConvertPage> {
                   },
                   child: Text(
                     'Voir le taux de change',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.blue,
-                    ),
+                    style: TextStyle(color: Colors.blue, fontSize: 10),
                   ),
                 ),
               ],

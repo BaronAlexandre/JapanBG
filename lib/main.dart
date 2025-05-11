@@ -18,7 +18,10 @@ class NavigationBarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: Color.fromARGB(255, 252, 243, 230),
+      ),
       home: const NavigationExample(),
       localizationsDelegates: FlutterQuillLocalizations.localizationsDelegates,
       supportedLocales: FlutterQuillLocalizations.supportedLocales,
@@ -54,6 +57,7 @@ class _NavigationExampleState extends State<NavigationExample> {
           });
         },
         indicatorColor: const Color.fromARGB(255, 188, 0, 45),
+        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
         selectedIndex: currentPageIndex,
         destinations: [
           NavigationDestination(
@@ -90,7 +94,7 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
           NavigationDestination(
             selectedIcon: Icon(
-              Icons.map,
+              Icons.map_outlined,
               color: currentPageIndex == 4 ? Colors.white : Colors.black38,
             ),
             icon: Icon(Icons.map_outlined),

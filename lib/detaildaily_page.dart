@@ -202,6 +202,7 @@ class _DayEditorPageState extends State<DayEditorPage> {
     final date = dayData["date"] ?? "";
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -320,12 +321,11 @@ class _DayEditorPageState extends State<DayEditorPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        height: 50, // Ajustez la hauteur selon vos besoins
         color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            if (widget.day > 1) // Ne pas afficher si c'est le premier jour
+            if (widget.day > 1)
               Row(
                 children: [
                   IconButton(

@@ -365,6 +365,7 @@ class CommunicatePageState extends State<CommunicatePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pour blablater'),
+        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -395,7 +396,7 @@ class CommunicatePageState extends State<CommunicatePage> {
           if (_translatedText.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
+              child: SelectableText(
                 _translatedText,
                 style: const TextStyle(
                   fontSize: 16,

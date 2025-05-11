@@ -255,6 +255,7 @@ class MapsPageState extends State<MapsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Metro Map'),
+        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),
@@ -270,7 +271,7 @@ class MapsPageState extends State<MapsPage> {
               : FlutterMap(
                 options: MapOptions(
                   initialCenter: LatLng(35.68, 139.76),
-                  initialZoom: 13.0,
+                  initialZoom: 11.0,
                   interactionOptions: const InteractionOptions(
                     flags:
                         InteractiveFlag.pinchZoom |

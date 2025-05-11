@@ -50,7 +50,10 @@ class ConvertPageState extends State<ConvertPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Convertisseur')),
+      appBar: AppBar(
+        title: Text('Convertisseur'),
+        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

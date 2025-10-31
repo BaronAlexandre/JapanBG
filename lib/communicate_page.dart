@@ -112,7 +112,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
     Phrase(
       francais: 'Ce train va à ... ?',
-      japonais: 'この電車は...に行きますか？',
+      japonais: 'この電車は...に行きますか ?',
       romaji: 'Kono densha wa ... ni ikimasu ka?',
       emoji: '🚆',
     ),
@@ -126,43 +126,103 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
   ],
 
-  'Restaurants et Repas': [
+'Restaurants et Repas': [
     Phrase(
-      francais: 'Le menu, s\'il vous plaît',
-      japonais: 'メニューをお願いします',
-      romaji: 'Menyuu o onegaishimasu',
-      emoji: '📋',
+      francais: 'Qu\'est-ce que vous conseillez ?',
+      japonais: '何をおすすめしますか？',
+      romaji: 'Nani o osusume shimasu ka?',
+      emoji: '👨‍🍳',
     ),
     Phrase(
-      francais: 'C\'est quoi ce plat ?',
-      japonais: 'これは何ですか？',
-      romaji: 'Kore wa nan desu ka?',
-      emoji: '🍽️',
+      francais: 'Quelle est la spécialité de la maison ?',
+      japonais: 'お店の名物は何ですか？',
+      romaji: 'Omise no meibutsu wa nan desu ka?',
+      emoji: '⭐',
     ),
     Phrase(
-      francais: 'Je suis allergique à ...',
-      japonais: '...のアレルギーがあります',
-      romaji: '... no arerugii ga arimasu',
-      emoji: '⚠️',
+      francais: 'Je voudrais des ramen, s\'il vous plaît',
+      japonais: 'ラーメンをお願いします',
+      romaji: 'Raamen o onegaishimasu',
+      emoji: '🍜',
     ),
     Phrase(
-      francais: 'Sans viande, s\'il vous plaît',
-      japonais: '肉なしでお願いします',
-      romaji: 'Niku nashi de onegaishimasu',
-      emoji: '🥦',
+      francais: 'Avez-vous des sushi frais ?',
+      japonais: '新鮮な寿司はありますか？',
+      romaji: 'Shinsen na sushi wa arimasu ka?',
+      emoji: '🍣',
     ),
     Phrase(
-      francais: 'C\'était délicieux',
-      japonais: 'おいしかったです',
-      romaji: 'Oishikatta desu',
+      francais: 'Je voudrais essayer le plat local',
+      japonais: '郷土料理を食べてみたいです',
+      romaji: 'Kyoudo ryouri o tabete mitai desu',
+      emoji: '🥢',
+    ),
+    Phrase(
+      francais: 'Qu\'est-ce qu\'il y a dans ce plat ?',
+      japonais: 'この料理には何が入っていますか？',
+      romaji: 'Kono ryouri ni wa nani ga haitte imasu ka?',
+      emoji: '🔍',
+    ),
+    Phrase(
+      francais: 'C\'est épicé ?',
+      japonais: '辛いですか？',
+      romaji: 'Karai desu ka?',
+      emoji: '🌶️',
+    ),
+    Phrase(
+      francais: 'Une portion pour une personne',
+      japonais: '一人前をお願いします',
+      romaji: 'Hitorimae o onegaishimasu',
+      emoji: '👤',
+    ),
+    Phrase(
+      francais: 'L\'addition, s\'il vous plaît',
+      japonais: 'お会計をお願いします',
+      romaji: 'Okaikei o onegaishimasu',
+      emoji: '💳',
+    ),
+    Phrase(
+      francais: 'Où puis-je manger du bon yakitori ?',
+      japonais: '美味しい焼き鳥はどこで食べられますか？',
+      romaji: 'Oishii yakitori wa doko de taberaremasu ka?',
+      emoji: '🍡',
+    ),
+    Phrase(
+      francais: 'Y a-t-il un restaurant 24h/24 près d\'ici ?',
+      japonais: '近くに24時間営業のレストランはありますか ?',
+      romaji: 'Chikaku ni nijuuyojikan eigyou no resutoran wa arimasu ka?',
+      emoji: '🌙',
+    ),
+    Phrase(
+      francais: 'Je suis végétarien',
+      japonais: 'ベジタリアンです',
+      romaji: 'Bejitarian desu',
+      emoji: '🥬',
+    ),
+    Phrase(
+      francais: 'Pouvez-vous me montrer comment manger ceci ?',
+      japonais: 'これをどうやって食べるか教えてください',
+      romaji: 'Kore o dou yatte taberu ka oshiete kudasai',
+      emoji: '🤔',
+    ),
+    Phrase(
+      francais: 'C\'était absolument délicieux !',
+      japonais: 'とても美味しかったです！',
+      romaji: 'Totemo oishikatta desu!',
       emoji: '😋',
+    ),
+    Phrase(
+      francais: 'Où est le meilleur restaurant de la ville ?',
+      japonais: 'この街で一番美味しいレストランはどこですか？',
+      romaji: 'Kono machi de ichiban oishii resutoran wa doko desu ka?',
+      emoji: '🏆',
     ),
   ],
 
   'Shopping et Argent': [
     Phrase(
       francais: 'Y a-t-il un distributeur de billets près d\'ici ?',
-      japonais: '近くにATMはありますか？',
+      japonais: '近くにATMはありますか ?',
       romaji: 'Chikaku ni ATM wa arimasu ka?',
       emoji: '💳',
     ),
@@ -186,7 +246,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
     ),
     Phrase(
       francais: 'Avez-vous la taille M ?',
-      japonais: 'Mサイズはありますか？',
+      japonais: 'Mサイズはありますか ?',
       romaji: 'M saizu wa arimasu ka?',
       emoji: '📏',
     ),
@@ -195,7 +255,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Transport et Déplacements': [
     Phrase(
       francais: 'À quelle heure part le dernier train ?',
-      japonais: '最終電車は何時ですか？',
+      japonais: '最終電車は何時ですか ?',
       romaji: 'Saishuu densha wa nanji desu ka?',
       emoji: '⏰',
     ),
@@ -210,26 +270,26 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Loisirs et Visites Culturelles': [
     Phrase(
       francais: 'Pouvez-vous me recommander un musée ?',
-      japonais: 'おすすめの博物館はありますか？',
+      japonais: 'おすすめの博物館はありますか ?',
       romaji: 'Osusume no hakubutsukan wa arimasu ka?',
       emoji: '🖼️',
     ),
     Phrase(
       francais: 'Où est le temple le plus proche ?',
-      japonais: '一番近い寺はどこですか？',
+      japonais: '一番近い寺はどこですか ?',
       romaji: 'Ichiban chikai tera wa doko desu ka?',
       emoji: '⛩️',
     ),
     Phrase(
       francais:
           'Quel est le meilleur endroit pour voir des cerisiers en fleurs ?',
-      japonais: '桜を見るのに一番いい場所はどこですか？',
+      japonais: '桜を見るのに一番いい場所はどこですか ?',
       romaji: 'Sakura o miru no ni ichiban ii basho wa doko desu ka?',
       emoji: '🌸',
     ),
     Phrase(
       francais: 'Y a-t-il un tampon du lieu ?',
-      japonais: 'この場所のスタンプはありますか？',
+      japonais: 'この場所のスタンプはありますか ?',
       romaji: 'Kono basho no sutanpu wa arimasu ka?',
       emoji: '🖋️',
     ),
@@ -238,7 +298,7 @@ final Map<String, List<Phrase>> phrasesParCategorie = {
   'Langue et Communication': [
     Phrase(
       francais: 'Parlez-vous anglais ?',
-      japonais: '英語を話せますか？',
+      japonais: '英語を話せますか ?',
       romaji: 'Eigo o hanasemasu ka?',
       emoji: '🇬🇧',
     ),
@@ -311,9 +371,8 @@ class CommunicatePage extends StatefulWidget {
 }
 
 class CommunicatePageState extends State<CommunicatePage> {
-  final String _searchQuery = '';
-  final bool _isSearching = false;
   final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _translatorFocusNode = FocusNode();
   String _translatedText = '';
   final OnDeviceTranslator _translator = OnDeviceTranslator(
     sourceLanguage: TranslateLanguage.french,
@@ -341,155 +400,355 @@ class CommunicatePageState extends State<CommunicatePage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPhrases =
-        phrasesParCategorie.entries
-            .map((entry) {
-              final filteredList =
-                  entry.value.where((phrase) {
-                    return phrase.francais.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        ) ||
-                        phrase.japonais.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        ) ||
-                        phrase.romaji.toLowerCase().contains(
-                          _searchQuery.toLowerCase(),
-                        );
-                  }).toList();
-
-              return MapEntry(entry.key, filteredList);
-            })
-            .where((entry) => entry.value.isNotEmpty)
-            .toList();
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pour blablater'),
-        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                showSearch(context: context, delegate: PhraseSearchDelegate());
-              },
-            ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          // Dismiss keyboard when tapping outside translator input
+          FocusScope.of(context).unfocus();
+        },
+  child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF8F9FA),
+              Color(0xFFE9ECEF),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header moderne
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.red[100],
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text('🇯🇵', style: TextStyle(fontSize: 24)),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Blabla',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                              Text(
+                                'Phrases essentielles en japonais',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.search, color: Colors.blue[600]),
+                            onPressed: () {
+                              showSearch(context: context, delegate: PhraseSearchDelegate());
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Section traducteur
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.translate, color: Colors.green[600], size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Traducteur',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey[200]!),
+                        ),
+                        child: TextField(
+                          controller: _textEditingController,
+                          focusNode: _translatorFocusNode,
+                          maxLines: 2,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (_) => FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            hintText: 'Tapez votre texte en français...',
+                            hintStyle: TextStyle(color: Colors.grey[500]),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(16),
+                            suffixIcon: Container(
+                              margin: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.green[600],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.translate, color: Colors.white),
+                                onPressed: _translateText,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (_translatedText.isNotEmpty) ...[
+                        SizedBox(height: 16),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green[50],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.green[200]!),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Traduction :',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.green[700],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              SelectableText(
+                                _translatedText,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green[800],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              
+              SizedBox(height: 20),
+              
+              // Liste des catégories
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  itemCount: phrasesParCategorie.entries.length,
+                  itemBuilder: (context, index) {
+                    final entry = phrasesParCategorie.entries.elementAt(index);
+                    return _buildCategoryCard(entry.key, entry.value);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ), // end SafeArea
+      ), // end gradient Container
+    ), // end GestureDetector
+  );
+  }
+
+  Widget _buildCategoryCard(String categoryName, List<Phrase> phrases) {
+    final categoryColors = {
+      'Salutations et Politesse': Colors.blue,
+      'Se Présenter et Se Décrire': Colors.purple,
+      'Orientation et Directions': Colors.orange,
+      'Restaurants et Repas': Colors.red,
+      'Shopping et Argent': Colors.green,
+      'Transport et Déplacements': Colors.cyan,
+      'Loisirs et Visites Culturelles': Colors.pink,
+      'Langue et Communication': Colors.indigo,
+      'Nombre': Colors.teal,
+      'Mots Utiles': Colors.amber,
+    };
+    
+    final color = categoryColors[categoryName] ?? Colors.grey;
+    
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                labelText: 'Texte à traduire',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.translate),
-                  onPressed: _translateText,
-                ),
-              ),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: EdgeInsets.all(20),
+          childrenPadding: EdgeInsets.only(bottom: 16),
+          leading: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              _getCategoryIcon(categoryName),
+              color: color,
+              size: 20,
             ),
           ),
-          if (_translatedText.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SelectableText(
-                _translatedText,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          title: Text(
+            categoryName,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Colors.grey[800],
             ),
+          ),
+          subtitle: Text(
+            '${phrases.length} phrases',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+            ),
+          ),
+          children: phrases.map((phrase) => _buildPhraseCard(phrase, color)).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhraseCard(Phrase phrase, Color color) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(phrase.emoji, style: TextStyle(fontSize: 20)),
+          ),
+          SizedBox(width: 16),
           Expanded(
-            child:
-                _isSearching
-                    ? ListView(
-                      children:
-                          filteredPhrases.expand((entry) {
-                            return entry.value.map((phrase) {
-                              return ListTile(
-                                leading: Text(
-                                  phrase.emoji,
-                                  style: const TextStyle(fontSize: 24),
-                                ),
-                                title: Text(phrase.francais),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        phrase.japonais,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        phrase.romaji,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }).toList();
-                          }).toList(),
-                    )
-                    : ListView(
-                      children:
-                          phrasesParCategorie.entries.map((entry) {
-                            return ExpansionTile(
-                              title: Text(
-                                entry.key,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              children:
-                                  entry.value.map((phrase) {
-                                    return ListTile(
-                                      leading: Text(
-                                        phrase.emoji,
-                                        style: const TextStyle(fontSize: 24),
-                                      ),
-                                      title: Text(phrase.francais),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 4.0,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              phrase.japonais,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              phrase.romaji,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                            );
-                          }).toList(),
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  phrase.francais,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  phrase.japonais,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  phrase.romaji,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  IconData _getCategoryIcon(String categoryName) {
+    switch (categoryName) {
+      case 'Salutations et Politesse': return Icons.waving_hand;
+      case 'Se Présenter et Se Décrire': return Icons.person;
+      case 'Orientation et Directions': return Icons.directions;
+      case 'Restaurants et Repas': return Icons.restaurant;
+      case 'Shopping et Argent': return Icons.shopping_bag;
+      case 'Transport et Déplacements': return Icons.train;
+      case 'Loisirs et Visites Culturelles': return Icons.museum;
+      case 'Langue et Communication': return Icons.chat;
+      case 'Nombre': return Icons.numbers;
+      case 'Mots Utiles': return Icons.bookmark;
+      default: return Icons.category;
+    }
   }
 }
 
@@ -626,4 +885,6 @@ class PhraseSearchDelegate extends SearchDelegate<String> {
           }).toList(),
     );
   }
+
+  // Use default dispose from SearchDelegate
 }

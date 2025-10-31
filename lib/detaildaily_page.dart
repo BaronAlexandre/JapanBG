@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'theme.dart';
 
 class DayEditorPage extends StatefulWidget {
   final int day;
@@ -14,10 +16,11 @@ class DayEditorPage extends StatefulWidget {
   State<DayEditorPage> createState() => _DayEditorPageState();
 }
 
-class _DayEditorPageState extends State<DayEditorPage> {
+class _DayEditorPageState extends State<DayEditorPage> with WidgetsBindingObserver {
   late QuillController _controller;
   final FocusNode _editorFocusNode = FocusNode();
   final ScrollController _editorScrollController = ScrollController();
+  Timer? _saveTimer;
 
   final Map<int, Map<String, String>> _dayInfo = {
     1: {
@@ -151,43 +154,111 @@ class _DayEditorPageState extends State<DayEditorPage> {
   @override
   void initState() {
     super.initState();
-    _controller = QuillController.basic();
+    WidgetsBinding.instance.addObserver(this);
+    // Initial controller with default day content so UI is never blank
+    _controller = _createDefaultController();
+    // Asynchronously load any persisted content and replace controller safely
     _loadContent();
   }
 
-  Future<void> _loadContent() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? content = prefs.getString('day_${widget.day}');
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    
+    // Sauvegarder quand l'app passe en arrière-plan ou se ferme
+    if (state == AppLifecycleState.paused || 
+        state == AppLifecycleState.detached) {
+      _saveContent();
+    }
+  }
 
-    if (content != null) {
-      _controller = QuillController(
-        document: Document.fromJson(jsonDecode(content)),
+  Future<void> _loadContent() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? content = prefs.getString('day_${widget.day}');
+
+      QuillController newController;
+      if (content != null && content.isNotEmpty) {
+        try {
+          final jsonData = jsonDecode(content);
+          newController = QuillController(
+            document: Document.fromJson(jsonData),
+            selection: const TextSelection.collapsed(offset: 0),
+          );
+        } catch (e) {
+          // Parsing JSON failed; fallback to default content.
+          newController = _createDefaultController();
+        }
+      } else {
+        newController = _createDefaultController();
+      }
+
+      // Replace controller safely
+      final oldController = _controller;
+      oldController.removeListener(_autoSave);
+      _controller = newController;
+      _controller.addListener(_autoSave);
+      oldController.dispose();
+
+      // Loaded document; length: ${_controller.document.length}
+      if (mounted) setState(() {});
+    } catch (e) {
+      // Erreur lors du chargement: $e
+      // keep existing controller, ensure listener
+      _controller.removeListener(_autoSave);
+      _controller.addListener(_autoSave);
+      if (mounted) setState(() {});
+    }
+  }
+
+  QuillController _createDefaultController() {
+    // Utiliser le contenu initial
+    String initialText = _dayInfo[widget.day]?['text'] ?? '';
+
+    if (initialText.isNotEmpty) {
+      final delta = [
+        {'insert': initialText + (initialText.endsWith('\n') ? '' : '\n')},
+      ];
+      return QuillController(
+        document: Document.fromJson(delta),
         selection: const TextSelection.collapsed(offset: 0),
       );
     } else {
-      String initialText = _dayInfo[widget.day]?['text'] ?? '';
-
-      var initialJson = [
-        {'insert': initialText},
-        {'insert': '\n'},
-      ];
-      _controller = QuillController(
-        document: Document.fromJson(initialJson),
-        selection: const TextSelection.collapsed(offset: 0),
-      );
+      final controller = QuillController.basic();
+      if (controller.document.isEmpty()) {
+        controller.document.insert(0, '\n');
+      }
+      return controller;
     }
-
-    setState(() {});
   }
 
   Future<void> _saveContent() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String content = jsonEncode(_controller.document.toDelta().toJson());
-    await prefs.setString('day_${widget.day}', content);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String content = jsonEncode(_controller.document.toDelta().toJson());
+      await prefs.setString('day_${widget.day}', content);
+  // Saved content.
+    } catch (e) {
+  // Erreur lors de la sauvegarde: $e
+    }
+  }
+
+  void _autoSave() {
+    // Annuler le timer précédent s'il existe
+    _saveTimer?.cancel();
+    
+    // Créer un nouveau timer pour sauvegarder après 2 secondes
+    _saveTimer = Timer(const Duration(seconds: 2), () {
+      _saveContent();
+    });
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _saveTimer?.cancel();
+    _controller.removeListener(_autoSave);
+    // Fire and forget last save (can't await in dispose safely)
     _saveContent();
     _controller.dispose();
     _editorScrollController.dispose();
@@ -195,177 +266,486 @@ class _DayEditorPageState extends State<DayEditorPage> {
     super.dispose();
   }
 
+  Color _getDayColor() {
+    // Retourner les mêmes couleurs que dans daily_page.dart
+    final colorMap = {
+      1: Color(0xFF6366F1), // Départ
+      2: JapanTheme.primaryRed, 3: JapanTheme.primaryRed, 4: JapanTheme.primaryRed, 5: JapanTheme.primaryRed, 9: JapanTheme.primaryRed, 21: JapanTheme.primaryRed, // Tokyo
+      6: Color(0xFF10B981), // Kamakura
+      7: Color(0xFF8B5CF6), // Fuji
+      8: Color(0xFF06B6D4), // Hakone
+      10: JapanTheme.sakuraPink, 11: JapanTheme.sakuraPink, 12: JapanTheme.sakuraPink, // Osaka
+      13: JapanTheme.forestGreen, // Nara
+      14: JapanTheme.secondaryGold, 15: JapanTheme.secondaryGold, 16: JapanTheme.secondaryGold, 17: JapanTheme.secondaryGold, // Kyoto
+      18: Color(0xFF14B8A6), 19: Color(0xFF14B8A6), 20: Color(0xFF14B8A6), // Ishigaki
+      22: Color(0xFF6366F1), // Retour
+    };
+    return colorMap[widget.day] ?? Color(0xFF6B7280);
+  }
+
+  String _getCityName() {
+    final cityMap = {
+      1: 'Départ', 22: 'Retour',
+      2: 'Tokyo', 3: 'Tokyo', 4: 'Tokyo', 5: 'Tokyo', 9: 'Tokyo', 21: 'Tokyo',
+      6: 'Kamakura', 7: 'Fuji', 8: 'Hakone',
+      10: 'Osaka', 11: 'Osaka', 12: 'Osaka', 13: 'Nara',
+      14: 'Kyoto', 15: 'Kyoto', 16: 'Kyoto', 17: 'Kyoto',
+      18: 'Ishigaki', 19: 'Ishigaki', 20: 'Ishigaki',
+    };
+    return cityMap[widget.day] ?? 'Japon';
+  }
+
   @override
   Widget build(BuildContext context) {
     final dayData = _dayInfo[widget.day] ?? {};
     final title = dayData["title"] ?? "";
     final date = dayData["date"] ?? "";
+    final dayColor = _getDayColor();
+    final cityName = _getCityName();
+    
+    // Le contrôleur est toujours disponible (initialisé vide puis chargé)
+    
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 190, 200, 200),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontSize: 18)),
-            Text(date, style: const TextStyle(fontSize: 14)),
-            Text('Jour ${widget.day}', style: const TextStyle(fontSize: 12)),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              dayColor.withOpacity(0.1),
+              Colors.white,
+            ],
+          ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reset',
-            onPressed: () async {
-              bool? confirmReset = await showDialog<bool>(
-                context: context,
-                builder:
-                    (context) => AlertDialog(
-                      title: const Text('Confirmation'),
-                      content: const Text(
-                        'Êtes-vous sûr de vouloir réinitialiser ce jour ?',
-                      ),
-                      actions: [
-                        TextButton(
-                          child: const Text('Annuler'),
-                          onPressed: () => Navigator.of(context).pop(false),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Custom Header
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back, color: dayColor),
+                            onPressed: () => Navigator.pop(context),
+                          ),
                         ),
-                        ElevatedButton(
-                          child: const Text('Confirmer'),
-                          onPressed: () => Navigator.of(context).pop(true),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: dayColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      cityName,
+                                      style: TextStyle(
+                                        color: dayColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: dayColor,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: dayColor.withOpacity(0.3),
+                                          blurRadius: 8,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${widget.day}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                title,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                              Text(
+                                date,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: PopupMenuButton<String>(
+                            icon: Icon(Icons.more_vert, color: dayColor),
+                            onSelected: (value) async {
+                              if (value == 'reset') {
+                                bool? confirmReset = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.warning_amber, color: Colors.orange),
+                                        SizedBox(width: 8),
+                                        Text('Confirmation'),
+                                      ],
+                                    ),
+                                    content: Text(
+                                      'Êtes-vous sûr de vouloir réinitialiser ce jour ? Toutes vos modifications seront perdues.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('Annuler'),
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text('Réinitialiser'),
+                                        onPressed: () => Navigator.of(context).pop(true),
+                                      ),
+                                    ],
+                                  ),
+                                );
+
+                                if (confirmReset == true) {
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  await prefs.remove('day_${widget.day}');
+                                  _loadContent();
+                                }
+                              }
+                            },
+                            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                              PopupMenuItem<String>(
+                                value: 'reset',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.refresh, color: Colors.red),
+                                    SizedBox(width: 8),
+                                    Text('Réinitialiser'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-              );
-
-              if (confirmReset == true) {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.remove('day_${widget.day}');
-                _loadContent();
-              }
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            QuillSimpleToolbar(
-              controller: _controller,
-              config: QuillSimpleToolbarConfig(
-                embedButtons: FlutterQuillEmbeds.toolbarButtons(),
-                showClipboardPaste: true,
-                customButtons: [
-                  QuillToolbarCustomButtonOptions(
-                    icon: const Icon(Icons.add_alarm_rounded),
-                    onPressed: () {
-                      _controller.document.insert(
-                        _controller.selection.extentOffset,
-                        TimeStampEmbed(DateTime.now().toString()),
-                      );
-
-                      _controller.updateSelection(
-                        TextSelection.collapsed(
-                          offset: _controller.selection.extentOffset + 1,
-                        ),
-                        ChangeSource.local,
-                      );
-                    },
-                  ),
-                ],
-                buttonOptions: QuillSimpleToolbarButtonOptions(
-                  base: QuillToolbarBaseButtonOptions(
-                    afterButtonPressed: () {
-                      final isDesktop = {
-                        TargetPlatform.linux,
-                        TargetPlatform.windows,
-                        TargetPlatform.macOS,
-                      }.contains(defaultTargetPlatform);
-                      if (isDesktop) {
-                        _editorFocusNode.requestFocus();
-                      }
-                    },
-                  ),
-                  linkStyle: QuillToolbarLinkStyleButtonOptions(
-                    validateLink: (link) {
-                      return true;
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: QuillEditor(
-                focusNode: _editorFocusNode,
-                scrollController: _editorScrollController,
-                controller: _controller,
-                config: QuillEditorConfig(
-                  placeholder: 'Start writing your notes...',
-                  padding: const EdgeInsets.all(16),
-                  embedBuilders: [
-                    ...FlutterQuillEmbeds.editorBuilders(
-                      imageEmbedConfig: QuillEditorImageEmbedConfig(
-                        imageProviderBuilder: (context, imageUrl) {
-                          if (imageUrl.startsWith('assets/')) {
-                            return AssetImage(imageUrl);
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    TimeStampEmbedBuilder(),
                   ],
                 ),
               ),
+              
+              // Toolbar avec design amélioré
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 12,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: QuillSimpleToolbar(
+                  controller: _controller,
+                  config: QuillSimpleToolbarConfig(
+                    embedButtons: FlutterQuillEmbeds.toolbarButtons(),
+                    showClipboardPaste: true,
+                    customButtons: [
+                      QuillToolbarCustomButtonOptions(
+                        icon: Icon(Icons.schedule, color: dayColor),
+                        onPressed: () {
+                          final now = DateTime.now();
+                          final timeStr = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+                          _controller.document.insert(
+                            _controller.selection.extentOffset,
+                            TimeStampEmbed(timeStr),
+                          );
+
+                          _controller.updateSelection(
+                            TextSelection.collapsed(
+                              offset: _controller.selection.extentOffset + 1,
+                            ),
+                            ChangeSource.local,
+                          );
+                        },
+                      ),
+                    ],
+                    buttonOptions: QuillSimpleToolbarButtonOptions(
+                      base: QuillToolbarBaseButtonOptions(
+                        afterButtonPressed: () {
+                          final isDesktop = {
+                            TargetPlatform.linux,
+                            TargetPlatform.windows,
+                            TargetPlatform.macOS,
+                          }.contains(defaultTargetPlatform);
+                          if (isDesktop) {
+                            _editorFocusNode.requestFocus();
+                          }
+                        },
+                      ),
+                      linkStyle: QuillToolbarLinkStyleButtonOptions(
+                        validateLink: (link) {
+                          return true;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              
+              SizedBox(height: 16),
+              
+              // Editor avec design amélioré
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 12,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Scrollbar(
+                      controller: _editorScrollController,
+                      thumbVisibility: true,
+                      child: QuillEditor(
+                        focusNode: _editorFocusNode,
+                        scrollController: _editorScrollController,
+                        controller: _controller,
+                        config: QuillEditorConfig(
+                        placeholder: 'Commencez à écrire vos notes du jour...',
+                        padding: const EdgeInsets.all(20),
+                        autoFocus: false,
+                          expands: false,
+                          scrollable: true,
+                        showCursor: true,
+                        paintCursorAboveText: false,
+                        enableInteractiveSelection: true,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardAppearance: Brightness.light,
+                        embedBuilders: [
+                          ...FlutterQuillEmbeds.editorBuilders(
+                            imageEmbedConfig: QuillEditorImageEmbedConfig(
+                              imageProviderBuilder: (context, imageUrl) {
+                                if (imageUrl.startsWith('assets/')) {
+                                  return AssetImage(imageUrl);
+                                }
+                                return NetworkImage(imageUrl);
+                              },
+                            ),
+                          ),
+                          TimeStampEmbedBuilder(),
+                        ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              
+              SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+      
+      // Navigation redesignée
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: Offset(0, -4),
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            if (widget.day > 1)
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => DayEditorPage(day: widget.day - 1),
-                        ),
-                      );
-                    },
-                  ),
-                  Text('J${widget.day - 1}'),
-                ],
-              )
-            else
-              SizedBox(width: 60),
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              if (widget.day > 1)
+                _buildNavButton(
+                  icon: Icons.arrow_back_ios,
+                  label: 'J${widget.day - 1}',
+                  onPressed: () {
+                    _navigateToDay(widget.day - 1, backwards: true);
+                  },
+                  isNext: false,
+                )
+              else
+                SizedBox(width: 80),
 
-            if (widget.day < 22)
-              Row(
-                children: [
-                  Text('J${widget.day + 1}'),
-                  IconButton(
-                    icon: Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => DayEditorPage(day: widget.day + 1),
-                        ),
-                      );
-                    },
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: dayColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Jour ${widget.day} / 22',
+                  style: TextStyle(
+                    color: dayColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
                   ),
-                ],
-              )
-            else
-              SizedBox(width: 60),
-          ],
+                ),
+              ),
+
+              if (widget.day < 22)
+                _buildNavButton(
+                  icon: Icons.arrow_forward_ios,
+                  label: 'J${widget.day + 1}',
+                  onPressed: () {
+                    _navigateToDay(widget.day + 1, backwards: false);
+                  },
+                  isNext: true,
+                )
+              else
+                SizedBox(width: 80),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+    required bool isNext,
+  }) {
+    final dayColor = _getDayColor();
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: dayColor.withOpacity(0.3)),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: isNext ? [
+              Text(
+                label,
+                style: TextStyle(
+                  color: dayColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(width: 4),
+              Icon(icon, color: dayColor, size: 16),
+            ] : [
+              Icon(icon, color: dayColor, size: 16),
+              SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: dayColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToDay(int day, {required bool backwards}) {
+    // Dispose current page after pushReplacement to free resources
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => DayEditorPage(day: day),
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final beginOffset = backwards ? const Offset(-1.0, 0.0) : const Offset(1.0, 0.0);
+          final endOffset = Offset.zero;
+          final tween = Tween(begin: beginOffset, end: endOffset).chain(CurveTween(curve: Curves.easeOutCubic));
+          final opacityTween = Tween<double>(begin: 0.0, end: 1.0);
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: FadeTransition(
+              opacity: animation.drive(opacityTween),
+              child: child,
+            ),
+          );
+        },
       ),
     );
   }
@@ -393,11 +773,29 @@ class TimeStampEmbedBuilder extends EmbedBuilder {
 
   @override
   Widget build(BuildContext context, EmbedContext embedContext) {
-    return Row(
-      children: [
-        const Icon(Icons.access_time_rounded),
-        Text(embedContext.node.value.data as String),
-      ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue[200]!),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.schedule, color: Colors.blue[600], size: 16),
+          SizedBox(width: 6),
+          Text(
+            embedContext.node.value.data as String,
+            style: TextStyle(
+              color: Colors.blue[700],
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
